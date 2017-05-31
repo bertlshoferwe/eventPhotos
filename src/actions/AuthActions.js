@@ -5,7 +5,10 @@ import {
   PASSWORD_CHANGED,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
-  LOGIN_USER
+  LOGIN_USER,
+  REGISTER_USER_SUCCESS,
+  REGISTER_USER_FAIL,
+  REGISTER_USER
 } from './types';
 
 export const emailChanged = (text) => {
@@ -28,13 +31,7 @@ export const loginUser = ({ email, password }) => {
 
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(user => loginUserSuccess(dispatch, user))
-      .catch((error) => {
-        console.log(error);
-
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-          .then(user => loginUserSuccess(dispatch, user))
-          .catch(() => loginUserFail(dispatch));
-      });
+      .catch(() => loginUserFail(dispatch));
   };
 };
 
@@ -49,4 +46,26 @@ const loginUserSuccess = (dispatch, user) => {
   });
 
   Actions.main();
+};
+
+
+export const registerUser = ({ email, password }) => {
+  return (dispatch) => {
+    dispatch({ type: REGISTER_USER });
+
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+          .then(user => registerUserSuccess(dispatch, user))
+          .catch(() => registerUserFail(dispatch));
+  };
+};
+
+const registerUserFail = (dispatch) => {
+  dispatch({ type: REGISTER_USER_FAIL });
+};
+
+const registerUserSuccess = (dispatch, user) => {
+  dispatch({ 
+    type: REGISTER_USER_SUCCESS,
+    payload: user
+   });
 };

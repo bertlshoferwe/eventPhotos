@@ -8,7 +8,7 @@ class CurrentEvent extends Component {
     return (
       <Card>
         <CardSection>
-          <Button onPress={()=>Actions.Camera()}>
+          <Button onPress={()=>Actions.ShowCamera()}>
             Launch Camera here
           </Button>  
         </CardSection>

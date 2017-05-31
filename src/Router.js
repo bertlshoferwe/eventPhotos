@@ -4,7 +4,7 @@ import LoginForm from './components/LoginForm';
 import CurrentEvent from './components/currentEvent';
 import JoinEvent from './components/joinEvent';
 import CreateEvent from './components/createEvent';
-import Camera from './components/camera';
+import Picture from './components/camera';
 
 
 const RouterComponent = () => {
@@ -28,7 +28,7 @@ const RouterComponent = () => {
       </Scene>
       <Scene key="JoinEvent" component={JoinEvent} title="Join Event" />
       <Scene key="CreateEvent" component={CreateEvent} title="Create Event" />
-      <Scene key="Camera" component="Camera" />
+      <Scene key="ShowCamera" component={Picture} />
     </Router>
   );
 };
