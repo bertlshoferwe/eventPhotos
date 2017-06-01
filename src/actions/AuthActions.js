@@ -67,5 +67,5 @@ const registerUserSuccess = (dispatch, user) => {
   dispatch({ 
     type: REGISTER_USER_SUCCESS,
     payload: user
-   });
+   });  
 };

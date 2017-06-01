@@ -34,7 +34,7 @@ export default (state = INITIAL_STATE, action) => {
     case REGISTER_USER_SUCCESS:
       return{ ...state, loading: false, password: '', user: action.payload, error: 'Successfully registered'};
     case REGISTER_USER_FAIL:
-      return{ ...state, ...INITIAL_STATE, error: 'Username already registered'}; 
+      return{ ...state, ...INITIAL_STATE, error: 'Error creating account, Please try again.'}; 
     default:
       return state;
   }

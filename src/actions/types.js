@@ -7,7 +7,12 @@ export const REGISTER_USER_SUCCESS = 'register_user_success';
 export const REGISTER_USER_FAIL = 'register_user_fail';
 export const REGISTER_USER = 'register_user';
 
-export const EMPLOYEE_UPDATE = 'employee_update';
-export const EMPLOYEE_CREATE = 'employee_create';
-export const EMPLOYEES_FETCH_SUCCESS = 'employees_fetch_success';
-export const EMPLOYEE_SAVE_SUCCESS = 'employee_save_success';
+export const EVENT_NAME_CHANGE = 'event_name_change';
+export const PIN_CHANGE = 'pin_change';
+export const CREATE_EVENT = 'create_event';
+export const CREATE_EVENT_SUCCESS = 'create_event_success';
+export const CREATE_EVENT_FAIL = 'create_event_fail';
+export const EVENT_FETCH_SUCCESS = 'event_fetch_success';
+
+export const JOIN_EVENT = 'join_event';
+export const JOIN_EVENT_PIN = 'join_event_pin';
