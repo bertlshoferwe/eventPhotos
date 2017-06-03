@@ -39,7 +39,7 @@ export const eventCreate = ({ eventName, eventPin }) => {
   return (dispatch) => {
     dispatch({ type: CREATE_EVENT });
 
-    firebase.database().ref(`/user/${currentUser.uid}/Created_Events`)
+    firebase.database().ref(`/user/${currentUser.uid}/Join_Events`)
       .push({ eventName, eventPin })
       .then(() => { dispatch({type: CREATE_EVENT_SUCCESS});
                 Actions.CurrentEvents({ type: 'reset' });});

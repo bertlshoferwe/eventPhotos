@@ -1,10 +1,23 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, registerUser } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 
 class LoginForm extends Component {
+                        constructor(props) {
+                        super(props);
+                        this.state = {
+                            registerAccount: false,
+                        }
+                    }
+
+  setRegisterVisible( registerAccount ) {
+                this.setState({
+                    registerAccount,
+                });}
+
+
   onEmailChange(text) {
     this.props.emailChanged(text);
   }
@@ -25,27 +38,38 @@ class LoginForm extends Component {
     this.props.registerUser({ email, password });
   }
 
-  renderButton() {
-    if (this.props.loading) {
-      return  <CardSection>
-                <Spinner size="large" />
-              </CardSection>;  
-    }
-
-    return (
-        <CardSection>
-          <Button onPress={this.loginButtonPress.bind(this)}>
-            Login
-           </Button>
-
-          <Button onPress={this.registerButtonPress.bind(this)}>
-            Sign Up
-          </Button>
-        </CardSection>
-    );
-  }
+  
 
   render() {
+
+      const renderButton = (this.props.loading) ? <CardSection>
+                                                      <Spinner size="large" />
+                                                    </CardSection>
+                                              :
+                                                  (this.state.registerAccount) ?  <CardSection>
+                                                                                    <Button onPress={this.registerButtonPress.bind(this)}>
+                                                                                      Sign Up
+                                                                                    </Button>
+                                                                                  </CardSection>
+                                                                              :
+                                                                                  <View>
+                                                                                    <CardSection>
+                                                                                      <Button onPress={this.loginButtonPress.bind(this)>
+                                                                                        Login
+                                                                                      </Button>
+                                                                                    </CardSection>
+                                                                                    <CardSection>
+                                                                                        <TouchableOpacity onPress={()=>this.setRegisterVisible(true)}>
+                                                                                          <Text>
+                                                                                            Create new account
+                                                                                          </Text>  
+                                                                                        </TouchableOpacity>
+                                                                                    </CardSection>
+                                                                                    </View>
+                                                                                  ;
+
+
+
     return (
       <Card>
         <CardSection>
@@ -71,7 +95,9 @@ class LoginForm extends Component {
           {this.props.error}
         </Text>
 
-          {this.renderButton()}
+        <View>
+          { renderButton }
+        </View>
 
       </Card>
     );

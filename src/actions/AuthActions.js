@@ -6,6 +6,7 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
   LOGIN_USER,
+  REGISTER_VISIBLE,
   REGISTER_USER_SUCCESS,
   REGISTER_USER_FAIL,
   REGISTER_USER
@@ -68,4 +69,5 @@ const registerUserSuccess = (dispatch, user) => {
     type: REGISTER_USER_SUCCESS,
     payload: user
    });  
+
 };

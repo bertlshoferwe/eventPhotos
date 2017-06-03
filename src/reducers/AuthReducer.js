@@ -4,6 +4,7 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
   LOGIN_USER,
+  REGISTER_VISIBLE,
   REGISTER_USER,
   REGISTER_USER_FAIL,
   REGISTER_USER_SUCCESS
@@ -14,7 +15,8 @@ const INITIAL_STATE = {
   password: '',
   user: null,
   error: '',
-  loading: false
+  loading: false,
+  RegisterVisibile: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
