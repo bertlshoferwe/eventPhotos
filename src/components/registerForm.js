@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, loginUser, registerUser } from '../actions';
-import { Actions} from 'react-native-router-flux';
+import { emailChanged, passwordChanged, registerUser } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 
-class LoginForm extends Component {
-                       
+class RegisterForm extends Component {
+
+
   onEmailChange(text) {
     this.props.emailChanged(text);
   }
@@ -15,10 +15,10 @@ class LoginForm extends Component {
     this.props.passwordChanged(text);
   }
 
-  loginButtonPress() {
+  registerButtonPress() {
     const { email, password } = this.props;
 
-    this.props.loginUser({ email, password });
+    this.props.registerUser({ email, password });
   }
 
   
@@ -29,13 +29,11 @@ class LoginForm extends Component {
                                                       <Spinner size="large" />
                                                     </CardSection>
                                               :
-                                                    <CardSection>
-                                                      <Button onPress={this.loginButtonPress.bind(this)}>
-                                                        Login
-                                                      </Button>
-                                                    </CardSection>
-                                                    
-                                                  ;
+                                                  <CardSection>
+                                                    <Button onPress={this.registerButtonPress.bind(this)}>
+                                                        Sign Up
+                                                    </Button>
+                                                  </CardSection>
 
 
 
@@ -61,21 +59,13 @@ class LoginForm extends Component {
         </CardSection>
 
         <Text style={styles.errorTextStyle}>
-          {this.props.error}
+          { this.props.error }
         </Text>
-         <Text style={styles.successTextStyle}>
+        <Text style={styles.successTextStyle}>
           {this.props.success}
         </Text>
 
           { renderButton }
-
-         <CardSection>
-            <TouchableOpacity onPress={ () => Actions.Register()}>
-              <Text style={styles.successTextStyle}>
-                Create new account
-              </Text>  
-            </TouchableOpacity>
-        </CardSection>
 
       </Card>
     );
@@ -89,9 +79,9 @@ const styles = {
     color: 'red'
   },
   successTextStyle: {
-      fontSize: 20,
-      alignSelf: 'center',
-      color: 'green'
+    fontSize: 20,
+    alignSelf: 'center',
+    color: 'green'
   }
 };
 
@@ -102,5 +92,5 @@ const mapStateToProps = ({ auth }) => {
 };
 
 export default connect(mapStateToProps, {
-  emailChanged, passwordChanged, loginUser, registerUser
-})(LoginForm);
+  emailChanged, passwordChanged, registerUser
+})(RegisterForm);

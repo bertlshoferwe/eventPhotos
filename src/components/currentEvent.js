@@ -12,6 +12,11 @@ class CurrentEvent extends Component {
             Launch Camera here
           </Button>  
         </CardSection>
+        <CardSection>
+          <Button onPress={()=>Actions.Demo()}>
+            upload test
+          </Button>  
+        </CardSection>
       </Card>
     );
   }

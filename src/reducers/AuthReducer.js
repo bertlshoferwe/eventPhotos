@@ -4,7 +4,6 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
   LOGIN_USER,
-  REGISTER_VISIBLE,
   REGISTER_USER,
   REGISTER_USER_FAIL,
   REGISTER_USER_SUCCESS
@@ -16,7 +15,7 @@ const INITIAL_STATE = {
   user: null,
   error: '',
   loading: false,
-  RegisterVisibile: false,
+  success: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -34,7 +33,7 @@ export default (state = INITIAL_STATE, action) => {
     case REGISTER_USER:
       return{ ...state, loading: true, error: ''};
     case REGISTER_USER_SUCCESS:
-      return{ ...state, loading: false, password: '', user: action.payload, error: 'Successfully registered'};
+      return{ ...state, loading: false, password: '', user: action.payload, success: 'Successfully registered'};
     case REGISTER_USER_FAIL:
       return{ ...state, ...INITIAL_STATE, error: 'Error creating account, Please try again.'}; 
     default:

@@ -8,7 +8,10 @@ import {
   CREATE_EVENT_SUCCESS,
   EVENT_FETCH_SUCCESS,
   JOIN_EVENT,
-  JOIN_EVENT_PIN
+  JOIN_EVENT_PIN,
+  PATH_TO_PHOTO,
+  PHOTO_SAVED,
+  PHOTO_CLEARED,
 } from './types';
 
 export const eventChange = (text) => {
@@ -39,19 +42,28 @@ export const eventCreate = ({ eventName, eventPin }) => {
   return (dispatch) => {
     dispatch({ type: CREATE_EVENT });
 
-    firebase.database().ref(`/user/${currentUser.uid}/Join_Events`)
-      .push({ eventName, eventPin })
+    firebase.database().ref(`/Events/Created_Events/${currentUser.uid}`)
+      .push({ eventName, eventPin})
       .then(() => { dispatch({type: CREATE_EVENT_SUCCESS});
-                Actions.CurrentEvents({ type: 'reset' });});
-      
+                Actions.CurrentEvents({ type: 'reset' });
+    });
   };
 };
 
 
 
 export const joinEvent = ( joinPin ) => {
-  var ref = firebase.database().ref("Created_Events");
-ref.orderByChild("eventPin").equalTo(joinPin).on("child_added", function(snapshot) {
-  console.log(snapshot.key);
+  let pin = joinPin;  
+let Url = "https://eventphotos-edff1.firebaseio.com/Events/Created_Events"  
+let usersPath = "Events/Created_Events"
+fetch(`${Url}/${usersPath}`, {  
+  
+  
+  body: JSON.stringify({
+    evenpin: {pin}
+  })
 });
 };
+  
+
+

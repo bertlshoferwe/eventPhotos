@@ -5,7 +5,10 @@ import {
   CREATE_EVENT_FAIL,
   CREATE_EVENT_SUCCESS,
   JOIN_EVENT,
-  JOIN_EVENT_PIN
+  JOIN_EVENT_PIN,
+  PATH_TO_PHOTO,
+  PHOTO_SAVED,
+  PHOTO_CLEARED
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -35,3 +38,4 @@ export default (state = INITIAL_STATE, action) => {
       return state;
   }
 };
+
