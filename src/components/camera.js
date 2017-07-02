@@ -1,20 +1,10 @@
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  ScrollView,
-  CameraRoll,
-  Platform,
-  View,
-  StyleSheet,
-  Dimensions,
-  TouchableHighlight,
-  Image,
-  Text,
-} from 'react-native';
+import { connect } from 'react-redux';
+import {View, StyleSheet, Dimensions, TouchableHighlight, Image, Text } from 'react-native';
 import Camera from 'react-native-camera';
-import ImagePicker from 'react-native-image-picker'
-import RNFetchBlob from 'react-native-fetch-blob'
-import firebase from 'firebase'
+import ImagePicker from 'react-native-image-picker';
+import RNFetchBlob from 'react-native-fetch-blob';
+import firebase from 'firebase';
 
 
  // Prepare Blob support
@@ -28,7 +18,7 @@ const uploadImage = (uri, mime = 'image/pjpeg') => {
     const uploadUri = uri.replace('file://', '') 
     const sessionId = new Date().getTime()
     let uploadBlob = null
-    const imageRef = firebase.storage().ref('/Events/').child(`${sessionId}`)
+    const imageRef = firebase.storage().ref('/Events/12345').child(`${sessionId}`)
 
     fs.readFile(uploadUri, 'base64')
       .then((data) => {
@@ -44,10 +34,14 @@ const uploadImage = (uri, mime = 'image/pjpeg') => {
       })
       .then((url) => {
         resolve(url)
+        firebase.database().ref(`Created_Events/12345/images/`)
+        .push({url})
+        console.log(url)
       })
-      .catch((error) => {
-        reject(error)
-    })
+      .then(url => this.setState({ uploadURL: this.state.path }))
+      .then( this.setState({path: null}))
+      .catch(error => console.log(error))
+
   })
 }
 
@@ -58,10 +52,9 @@ class CameraRoute extends Component {
     super(props);
     this.state = {
       path: '',
-      pin: '1234',
     };
   }
-  
+   
 
 saveImage() {
     this.setState({ uploadURL: '' })
@@ -71,9 +64,6 @@ saveImage() {
         .then( this.setState({path: null}))
         .catch(error => console.log(error))
   }
-
-
-
 
   takePicture() {
     this.camera.capture()
@@ -176,4 +166,10 @@ const styles = StyleSheet.create({
     fontSize: 17,
   }
 });
-export default CameraRoute;
+const mapStateToProps = ({ event }) => {
+  const { selectedPin } = event;
+
+  return{  selectedPin };
+};
+
+export default connect(mapStateToProps)(CameraRoute); 

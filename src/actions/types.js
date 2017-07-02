@@ -12,8 +12,9 @@ export const PIN_CHANGE = 'pin_change';
 export const CREATE_EVENT = 'create_event';
 export const CREATE_EVENT_SUCCESS = 'create_event_success';
 export const CREATE_EVENT_FAIL = 'create_event_fail';
-export const EVENT_FETCH_SUCCESS = 'event_fetch_success';
 
-export const JOIN_EVENT = 'join_event';
-export const JOIN_EVENT_PIN = 'join_event_pin';
+export const EVENTS_FETCH_SUCCESS = 'event_fetch_success';
+export const JOIN_EVENT_PIN = 'joine_event_pin';
+
+export const SELECTED_EVENT_PIN = 'selected_event_pin';
 
