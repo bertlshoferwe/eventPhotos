@@ -1,72 +1,88 @@
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
 import {
-  EMAIL_CHANGED,
-  PASSWORD_CHANGED,
-  LOGIN_USER_SUCCESS,
-  LOGIN_USER_FAIL,
-  LOGIN_USER,
-  REGISTER_USER_SUCCESS,
-  REGISTER_USER_FAIL,
-  REGISTER_USER
+    EMAIL_CHANGED,
+    PASSWORD_CHANGED,
+    LOGIN_USER_SUCCESS,
+    LOGIN_USER_FAIL,
+    LOGIN_USER,
+    REGISTER_USER_SUCCESS,
+    REGISTER_USER_FAIL,
+    REGISTER_USER
 } from './types';
 
-export const emailChanged = (text) => {
-  return {
-    type: EMAIL_CHANGED,
-    payload: text
-  };
-};
+export function emailChanged(text){
+    'use strict';
 
-export const passwordChanged = (text) => {
-  return {
-    type: PASSWORD_CHANGED,
-    payload: text
-  };
-};
+    return {
+        type: EMAIL_CHANGED,
+        payload: text
+    };
+}
 
-export const loginUser = ({ email, password }) => {
-  return (dispatch) => {
-    dispatch({ type: LOGIN_USER });
+export function passwordChanged(text){
+    'use strict';
 
-    firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(user => loginUserSuccess(dispatch, user))
-      .catch(() => loginUserFail(dispatch));
-  };
-};
+    return {
+        type: PASSWORD_CHANGED,
+        payload: text
+    };
+}
 
-const loginUserFail = (dispatch) => {
-  dispatch({ type: LOGIN_USER_FAIL });
-};
+export function loginUser({ email, password }){
+    'use strict';
 
-const loginUserSuccess = (dispatch, user) => {
-  dispatch({
-    type: LOGIN_USER_SUCCESS,
-    payload: user
-  });
+    return (dispatch) => {
+        dispatch({ type: LOGIN_USER });
 
-  Actions.main();
-};
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(user => loginUserSuccess(dispatch, user))
+            .catch(() => loginUserFail(dispatch));
+    };
+}
+
+function loginUserFail(dispatch){
+    'use strict';
+
+    dispatch({ type: LOGIN_USER_FAIL });
+}
+
+function loginUserSuccess(dispatch, user){
+    'use strict';
+
+    dispatch({
+        type: LOGIN_USER_SUCCESS,
+        payload: user
+    });
+
+    Actions.main();
+}
 
 
-export const registerUser = ({ email, password }) => {
-  return (dispatch) => {
-    dispatch({ type: REGISTER_USER });
+export function registerUser({ email, password }){
+    // 'use strict';
+
+    return (dispatch) => {
+        dispatch({ type: REGISTER_USER });
 
         firebase.auth().createUserWithEmailAndPassword(email, password)
-          .then(user => registerUserSuccess(dispatch, user))
-          .catch(() => registerUserFail(dispatch));
-  };
-};
+            .then(user => registerUserSuccess(dispatch, user))
+            .catch(() => registerUserFail(dispatch));
+    };
+}
 
-const registerUserFail = (dispatch) => {
-  dispatch({ type: REGISTER_USER_FAIL });
-};
+function registerUserFail(dispatch){
+    // 'use strict';
 
-const registerUserSuccess = (dispatch, user) => {
-  dispatch({ 
-    type: REGISTER_USER_SUCCESS,
-    payload: user
-   });  
-  Actions.login({type: "reset"});
-};
+    dispatch({ type: REGISTER_USER_FAIL });
+}
+
+function registerUserSuccess(dispatch, user){
+    // 'use strict';
+
+    dispatch({
+        type: REGISTER_USER_SUCCESS,
+        payload: user
+    });
+    Actions.login({type: "reset"});
+}

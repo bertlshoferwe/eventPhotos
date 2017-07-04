@@ -1,79 +1,77 @@
-import React, { Component } from 'react';
-import { Text } from 'react-native';
-import { connect } from 'react-redux';
-import { eventCreate, eventChange, pinChange} from '../actions'
-import { Card, CardSection, Input, Button, Spinner } from './common';
+import React, { Component }                             from 'react';
+import { Text }                                         from 'react-native';
+import { connect }                                      from 'react-redux';
+import { eventCreate, eventChange, pinChange}           from '../actions';
+import { Card, CardSection, Input, Button, Spinner }    from './common';
 
 class CreateEvent extends Component {
 
-    onEventNameChange(text) {
-    this.props.eventChange(text);
-  }
+    Constructor(props) {
+        Super(props);
 
-  onPinChange(text) {
-    this.props.pinChange(text);
-  }
-
-  eventButtonPress(){
-      const { eventName, eventPin } = this.props;
-
-    this.props.eventCreate({ eventName, eventPin });
-  }
-
-renderButton() {
-    if (this.props.loading) {
-      return  <CardSection>
-                <Spinner size="large" />
-              </CardSection>;  
+        this.onEventNameChange = this.onEventNameChange.bind(this);
+        this.onPinChange = this.onPinChange.bind(this);
+        this.eventButtonPress = this.eventButtonPress.bind(this);
     }
 
-    return (
-         <CardSection>
-           <Text>
-             { this.props.error }
-           </Text>  
-            <Button onPress={this.eventButtonPress.bind(this)}>
-                Create Event
-            </Button>
-        </CardSection>
-    );
-  }
+    onEventNameChange(text) {
+        this.props.eventChange(text);
+    }
 
-  render() {
+    onPinChange(text) {
+        this.props.pinChange(text);
+    }
 
-    return (
-      <Card>
-        <CardSection>
-          <Input
-            label="Event Name:"
-            placeholder="My Event Name"
-            onChangeText={this.onEventNameChange.bind(this)}
-            value={this.props.eventName}
-          />
-        </CardSection>
+    eventButtonPress(){
+        const { eventName, eventPin } = this.props;
 
-        <CardSection>
-            <Input
-            label="Pin"
-            placeholder="EX. 1234"
-            onChangeText={this.onPinChange.bind(this)}
-            value={this.props.eventPin}
-          />
-        </CardSection>
+        this.props.eventCreate({ eventName, eventPin });
+    }
 
-        {this.renderButton()}
+    render() {
+        return (
+            <Card>
+                <CardSection>
+                    <Input
+                        label="Event Name:"
+                        placeholder="My Event Name"
+                        onChangeText={this.onEventNameChange}
+                        value={this.props.eventName} />
+                </CardSection>
 
-      </Card>
-    );
-  }
+                <CardSection>
+                    <Input
+                        label="Pin"
+                        placeholder="EX. 1234"
+                        onChangeText={this.onPinChange}
+                        value={this.props.eventPin} />
+                </CardSection>
+
+                <CardSection style={{display: (this.props.loading) ? 'block' : 'none'}}>
+                    <Spinner size="large" />
+                </CardSection>
+                <CardSection style={{display: (!this.props.loading) ? 'block' : 'none'}}>
+                    <Text>
+                        { this.props.error }
+                    </Text>
+                    <Button onPress={this.eventButtonPress}>
+                        Create Event
+                    </Button>
+                </CardSection>
+            </Card>
+        );
+    }
 }
 
-const mapStateToProps = ({ event }) => {
-  const { eventName, eventPin, error, loading } = event;
-
-  return { eventName, eventPin, error, loading };
+const mapStateToProps = (state) => {
+    return {
+        eventName : state.event.eventName,
+        eventPin  : state.event.eventPin,
+        error     : state.event.error,
+        loading   : state.event.loading
+    };
 };
 
 export default connect(mapStateToProps, {
-  eventCreate, eventChange, pinChange
+    eventCreate, eventChange, pinChange
 })(CreateEvent);
