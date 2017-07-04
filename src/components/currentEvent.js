@@ -9,10 +9,20 @@ import {Card, CardSection, Button, Spinner} from './common';
 import ListItem from './ListItem';
 
 class CurrentEvent extends Component {
+  Constructor(props){
+    Super(props);
+
+      const joinedEvent = _.map(this.props.joinedEvent, (val, uid) => {
+          return { ...val, uid };
+
+       });
+       this.state={joinedEvent}
+       this.onRowPress=this.onRowPress.bind(this)
+  };
 
   componentWillMount() {
     this.props.eventsFetch();
-
+å
     this.createDataSource(this.props);
   }
 
@@ -21,7 +31,9 @@ class CurrentEvent extends Component {
     this.createDataSource(nextProps);
   }
 
-
+onRowPress(joinedEvent){
+      Actions.ShowCamera(joinedEvent.joinPin)
+}
 
   createDataSource({ joinedEvent }) {
     const ds = new ListView.DataSource({
@@ -32,7 +44,9 @@ class CurrentEvent extends Component {
   }
 
   renderRow(joinedEvents) {
-    return <ListItem joinedEvents={joinedEvents} />;
+    return <ListItem joinedEvents={this.state.joinedEvents}
+                      onRowPress={this.onRowPresss}
+                       />;
   }
 
   render() {
@@ -55,11 +69,8 @@ class CurrentEvent extends Component {
 
 
 const mapStateToProps = state => {
-  const joinedEvent = _.map(state.joinedEvent, (val, uid) => {
-    return { ...val, uid };
-  });
+  return{joinedEvent: state.joinEvent}
+  };
 
-  return { joinedEvent };
-};
 
 export default connect(mapStateToProps, { eventsFetch })(CurrentEvent);

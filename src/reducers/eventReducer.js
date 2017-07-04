@@ -4,7 +4,6 @@ import {
   CREATE_EVENT,
   CREATE_EVENT_FAIL,
   CREATE_EVENT_SUCCESS,
-//FETCH_EVENT_PIN,
   PATH_TO_PHOTO,
   PHOTO_SAVED,
   PHOTO_CLEARED,
@@ -35,12 +34,10 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, ...INITIAL_STATE, error:'Error creating your event'};
     case CREATE_EVENT_SUCCESS:
       return {...state, ...INITIAL_STATE, event: action.payload};
-   // case FETCH_EVENT_PIN:
-      //return { ...state, fetchedEvent: action.payload};
     case JOIN_EVENT_PIN:
       return { ...state, joinPin: action.payload};
     case SELECTED_EVENT_PIN:
-      return { ...state, selectedPin: action.payload}   
+      return { ...state, selectedPin: action.joinPin}   
     default:
       return state;
   }

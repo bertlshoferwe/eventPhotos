@@ -1,31 +1,21 @@
 import React, { Component } from 'react';
-import { Text, TouchableWithoutFeedback, View } from 'react-native';
-import {selectedEvent} from '../actions'
-import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
+import { Text} from 'react-native';
 import { CardSection, Button } from './common';
 
-class ListItem extends Component {
+const ListItem = (props) => {
 
- onRowPress({joinPin}) {
-        Actions.ShowCamera();
-        this.props.selectedEvent({joinPin});
-    }
-
-  render() {
-    const { joinName, joinPin } = this.props.joinedEvents;
     return (
       
           <CardSection style={{ flexDirection: 'row', justifyContent: 'center' }}>
-              <Button onPress={this.onRowPress.bind(this)} >
-            <Text style={styles.titleStyle}>
-              {joinName}
-            </Text> 
-            </Button>
+              <Button onPress={props.onRowPress(props.jojinedEvent)} >
+                <Text style={styles.titleStyle}>
+                  {props.joinEvent.joinName}
+                </Text> 
+              </Button>
           </CardSection>
 
     );
-  }
+  
 }
 
 const styles = {
@@ -36,4 +26,4 @@ const styles = {
   }
 };
 
-export default connect(null, { selectedEvent })(ListItem);
+export default ListItem;

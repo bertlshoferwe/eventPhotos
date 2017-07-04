@@ -66,9 +66,9 @@ export const joinEvent = ({joinPin}) => {
       };
     };
     
-export const selectedEvent = ({joinPin}) => {
+export const selectedEvent = (joinPin) => {
   return {
     type: SELECTED_EVENT_PIN,
-    payload: {joinPin}
+    joinPin
   };
 };

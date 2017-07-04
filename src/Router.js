@@ -29,8 +29,8 @@ const RouterComponent = () => {
         />
       </Scene>
       <Scene key="JoinEvent" component={JoinEvent} title="Join Event" />
-      <Scene key="CreateEvent" component={CreateEvent} title="Create Event" />
-      <Scene key="ShowCamera" component={Picture} />
+      <Scene key="CreateEvent" component={CreateEvent} title="Create Event" direction="leftToRight"/>
+      <Scene key="ShowCamera" component={Picture} direction="vertical"  />
     </Router>
   );
 };
