@@ -1,38 +1,43 @@
-import React from 'react';
-import { Scene, Router, Actions } from 'react-native-router-flux';
+import React, { Component } from 'react';
+import { StyleSheet, BackHandler, ToastAndroid } from 'react-native';
+import { Scene, Router, Actions, ActionConst } from 'react-native-router-flux';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/registerForm';
 import CurrentEvent from './components/currentEvent';
 import JoinEvent from './components/joinEvent';
 import CreateEvent from './components/createEvent';
 import Picture from './components/camera';
+import Splash from './components/splash';
 
 
-const RouterComponent = () => {
+
+class RouterComponent extends Component {
+
+ 
+  render() {
   return (
-    <Router sceneStyle={{ paddingTop: 65 }}>
-      <Scene key="auth">
-        <Scene key="login" component={LoginForm} title="Event Photos" />
-        <Scene key="Register" component={RegisterForm} title="Register" />
+    <Router>
+      <Scene key="SplashScreen">
+        <Scene key="splash" component={Splash} hideNavBar/>
       </Scene>
 
-      <Scene key="main">
-        <Scene
-          onRight={() => Actions.JoinEvent()}
-          rightTitle="Join"
-          onLeft={() => Actions.CreateEvent()}
-          leftTitle="Create"
-          key="CurrentEvents"
-          component={CurrentEvent}
-          title="Current Events"
-          initial
-        />
+      <Scene key="auth" hideNavBar >
+        <Scene key="login" component={LoginForm} title="Event Photos" type={ActionConst.RESET} />
+        <Scene key="Register" component={RegisterForm} title="Register"/>
       </Scene>
-      <Scene key="JoinEvent" component={JoinEvent} title="Join Event" />
-      <Scene key="CreateEvent" component={CreateEvent} title="Create Event" />
-      <Scene key="ShowCamera" component={Picture} />
+
+      <Scene key="main" hideNavBar >
+        <Scene key="CurrentEvents" component={CurrentEvent} initial />
+        <Scene key="JoinEvent" component={JoinEvent} title="Join Event" />
+        <Scene key="CreateEvent" component={CreateEvent} title="Create Event" />
+        <Scene key="ShowCamera" component={Picture} hideNavBar/>
+      </Scene>  
+
     </Router>
-  );
+    );
+  }
 };
+
+
 
 export default RouterComponent;

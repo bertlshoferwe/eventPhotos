@@ -16,6 +16,7 @@ const INITIAL_STATE = {
   error: '',
   loading: false,
   success: '',
+  registerError: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -29,13 +30,13 @@ export default (state = INITIAL_STATE, action) => {
     case LOGIN_USER_SUCCESS:
       return { ...state, ...INITIAL_STATE, user: action.payload };
     case LOGIN_USER_FAIL:
-      return { ...state, error: 'Authentication Failed.', password: '', loading: false };
+      return { ...state, error: 'Authentication Failed.',success:'', password: '', loading: false };
     case REGISTER_USER:
       return{ ...state, loading: true, error: ''};
     case REGISTER_USER_SUCCESS:
       return{ ...state, loading: false, password: '', user: action.payload, success: 'Successfully registered'};
     case REGISTER_USER_FAIL:
-      return{ ...state, ...INITIAL_STATE, error: 'Error creating account, Please try again.'}; 
+      return{ ...state, ...INITIAL_STATE, registerError: 'Error creating account'}; 
     default:
       return state;
   }

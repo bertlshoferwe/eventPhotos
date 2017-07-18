@@ -7,6 +7,7 @@ import reducers from './reducers';
 import Router from './Router';
 
 class App extends Component {
+  
   componentWillMount() {
     const config = {
       apiKey: "AIzaSyAsGgoIq0wzTpkO3avbaW38zMaHjFWXIuA",

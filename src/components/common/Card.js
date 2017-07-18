@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 const Card = (props) => {
   return (
-    <View style={styles.containerStyle}>
+    <View style={[styles.containerStyle, props.style]}>
       {props.children}
     </View>
   );
@@ -11,8 +11,8 @@ const Card = (props) => {
 
 const styles = {
   containerStyle: {
+    backgroundColor:'#fff',
     borderWidth: 1,
-    borderRadius: 2,
     borderColor: '#ddd',
     borderBottomWidth: 0,
     shadowColor: '#000',
@@ -22,7 +22,8 @@ const styles = {
     elevation: 1,
     marginLeft: 5,
     marginRight: 5,
-    marginTop: 10
+    marginTop: 10,
+    marginBottom:10,
   }
 };
 

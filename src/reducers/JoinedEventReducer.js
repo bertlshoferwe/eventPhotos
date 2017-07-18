@@ -1,13 +1,19 @@
 import {
-  EVENTS_FETCH_SUCCESS
+  FETCHING_EVENTS,
+  FETCHING_JOINED_SUCCESS
 } from '../actions/types';
 
-const INITIAL_STATE = {};
+const INITIAL_STATE = {
+  loading:false,
+  listItems: ''
+};
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case  EVENTS_FETCH_SUCCESS:
-      return action.payload;
+    case  FETCHING_EVENTS:
+      return { ...state, loading: true};
+    case FETCHING_JOINED_SUCCESS:
+      return { ...state, loading: false, listItems: action.payload};
     default:
       return state;
   }

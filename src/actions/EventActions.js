@@ -7,10 +7,7 @@ import {
   CREATE_EVENT_FAIL,
   CREATE_EVENT_SUCCESS,
   JOIN_EVENT_PIN,
-  PATH_TO_PHOTO,
-  PHOTO_SAVED,
-  PHOTO_CLEARED,
-  SELECTED_EVENT_PIN,
+  FETCHING_JOINED_EVENTS
 } from './types';
 
 export const eventChange = (text) => {
@@ -36,15 +33,20 @@ export const joinPinChange = (text) => {
 
 
 export const eventCreate = ({ eventName, eventPin }) => {
-  
+  const { currentUser } = firebase.auth();
+  const joinName = eventName;
+  const joinPin = eventPin;
   return (dispatch) => {
     dispatch({ type: CREATE_EVENT });
 
     firebase.database().ref(`Created_Events/${eventPin}`)
       .set({ eventName, eventPin})
       .then(() => { dispatch({type: CREATE_EVENT_SUCCESS});
-                Actions.CurrentEvents({ type: 'reset' });
-    });
+
+      firebase.database().ref(`Joined_Events/${currentUser.uid}/${eventPin}`)
+      .set({joinName, joinPin})
+    })
+  Actions.pop();
   };
 };
   
@@ -54,6 +56,7 @@ export const joinEvent = ({joinPin}) => {
   const db = firebase.database().ref(`Created_Events/${joinPin}`);
                     
   return (dispatch) => {
+    dispatch({ type: FETCHING_JOINED_EVENTS });
       db.once('value')
         .then( snap  => {
           var joinName = snap.child(`eventName`).val();
@@ -61,14 +64,7 @@ export const joinEvent = ({joinPin}) => {
 
           firebase.database().ref(`Joined_Events/${currentUser.uid}/${joinPin}`)
           .set({joinPin, joinName});
-        });
-        Actions.CurrentEvents({ type: 'reset' });
+        })
+        Actions.pop();
       };
     };
-    
-export const selectedEvent = ({joinPin}) => {
-  return {
-    type: SELECTED_EVENT_PIN,
-    payload: {joinPin}
-  };
-};

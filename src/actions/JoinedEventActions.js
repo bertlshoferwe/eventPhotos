@@ -1,7 +1,8 @@
 import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux';
 import {
-  EVENTS_FETCH_SUCCESS,
+  FETCHING_EVENTS,
+  FETCHING_JOINED_SUCCESS
 } from './types';
 
 
@@ -10,9 +11,10 @@ export const eventsFetch = () => {
   const db = firebase.database().ref(`Joined_Events/${currentUser.uid}`);
                     
   return (dispatch) => {
-      db.on('value', snap => {
+    dispatch({ type: FETCHING_EVENTS });
+    db.on('value', snap => {
         dispatch({
-          type: EVENTS_FETCH_SUCCESS,
+          type: FETCHING_JOINED_SUCCESS,
           payload: snap.val()
         })
       })

@@ -1,99 +1,233 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import firebase from 'firebase';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { Text, View, TouchableOpacity, Image, Dimensions, BackHandler,ToastAndroid } from 'react-native';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, registerUser } from '../actions';
 import { Actions} from 'react-native-router-flux';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 
 class LoginForm extends Component {
+        constructor(props) {
+          super(props);
+          
+          this.state = { 
+                        backPress:false,
+                        width: Dimensions.get('window').width,
+                       height: Dimensions.get('window').height, 
+                      };
+
+          this.handleBackButton = this.handleBackButton.bind(this)
+          this.onLayout = this.onLayout.bind(this);
+        }
+
+  componentWillMount() {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      Actions.main();
+    } 
+  });
+}
+  componentDidMount() {
+            BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+  componentWillUnmount() {
+           BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+  handleBackButton() {
+          if(!this.state.backPress) {
+                    ToastAndroid.show('Back again to exit', ToastAndroid.SHORT);
+                    this.setState({backPress:true});
+                    setTimeout(() => {
+                    this.setState({backPress:false});
+                  },2500)
+                  return true;;
+            } else {
+                  BackHandler.exitApp()
+                    return false;
+            }
+  }
                        
   onEmailChange(text) {
-    this.props.emailChanged(text);
+          this.props.emailChanged(text);
   }
 
   onPasswordChange(text) {
-    this.props.passwordChanged(text);
+          this.props.passwordChanged(text);
   }
 
   loginButtonPress() {
-    const { email, password } = this.props;
+          const { email, password } = this.props;
 
-    this.props.loginUser({ email, password });
+          this.props.loginUser({ email, password });
   }
 
-  
+  onLayout(e) {
+                    this.setState({
+                      width: Dimensions.get('window').width,
+                      height: Dimensions.get('window').height,
+                    });
+                  }
 
   render() {
 
-      const renderButton = (this.props.loading) ? <CardSection>
+    const styles = {
+            backgroundImage: {
+              flex:1,
+              alignItems: 'center',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              width: this.state.width, 
+              height: this.state.height
+            },
+            inputCard: {
+               width: this.state.width-30,
+              backgroundColor:'#1b365d'
+            },
+            loginButtonCardSectionStyle:{
+              backgroundColor:'#ccaed0'
+            },
+            loginButton:{
+              borderColor:'#ccaed0',
+              backgroundColor:'#ccaed0',
+            },
+            loginText:{
+              color:'#fff',
+              fontSize: 20,
+              fontWeight: '900',
+            },
+            createButtonCard: {
+              bottom: 0,
+              height: 50,
+              position: 'absolute',
+              width: this.state.width,
+            },
+            createCardSectionStyle: {
+              padding: 2, 
+              backgroundColor: '#ece3a5',
+            },
+            createButton:{
+              borderColor:'#ece3a5',
+              backgroundColor: '#ece3a5',
+            },
+            createText:{
+              color:'#1b365d',
+              fontWeight: '500',
+            },
+            errorInfo: {
+              flex:1,
+              color: 'red',
+              paddingTop: 2,
+              paddingBottom: 2,
+              textAlign: 'center',
+            },
+            successInfo: {
+              flex:1,
+              paddingTop: 2,
+              color: 'green',
+              paddingBottom: 2,
+              textAlign: 'center',
+            }
+      };
+
+      const renderButton = (this.props.loading) ? 
                                                       <Spinner size="large" />
-                                                    </CardSection>
                                               :
-                                                    <CardSection>
-                                                      <Button onPress={this.loginButtonPress.bind(this)}>
+                                                      <Button onPress={this.loginButtonPress.bind(this)} 
+                                                              buttonStyle={ styles.loginButton} 
+                                                              textStyle={styles.loginText}>
                                                         Login
                                                       </Button>
-                                                    </CardSection>
-                                                    
                                                   ;
+
+    const errorMessage = (!this.props.error) ? 
+                                                          <View/>
+                                                  :
+                                                          <Card> 
+                                                            <CardSection> 
+                                                              <Text style={styles.errorInfo}>
+                                                                {this.props.error}
+                                                              </Text>
+                                                            </CardSection>
+                                                           </Card>
+                                                      ;    
+
+    const successMessage = (!this.props.success) ? 
+                                                      <View/>
+                                              :
+                                                      <Card>
+                                                        <CardSection>
+                                                            <Text style={styles.successInfo}>
+                                                              {this.props.success}
+                                                            </Text>
+                                                        </CardSection>
+                                                      </Card>
+                                                  ;                                                                                                    
 
 
 
     return (
+  <Image 
+  onLayout={this.onLayout}
+  style={ styles.backgroundImage }
+  source={require('./images/background1.jpg')} 
+  >
+
+    <Card style={styles.inputCard}> 
+
       <Card>
         <CardSection>
           <Input
-            label="Email"
+            label= {<Icon name="md-mail" size={40} />}
             placeholder="email@gmail.com"
             onChangeText={this.onEmailChange.bind(this)}
             value={this.props.email}
           />
         </CardSection>
+    </Card>
 
+    <Card>    
         <CardSection>
           <Input
             secureTextEntry
-            label="Password"
+            label= {<Icon name="md-lock" size={40} />}
             placeholder="password"
             onChangeText={this.onPasswordChange.bind(this)}
             value={this.props.password}
           />
         </CardSection>
+    </Card>
 
-        <Text style={styles.errorTextStyle}>
-          {this.props.error}
-        </Text>
-         <Text style={styles.successTextStyle}>
-          {this.props.success}
-        </Text>
+    
+    {errorMessage}
+    {successMessage}
 
+    <Card>
+      <CardSection style={styles.loginButtonCardSectionStyle}>    
           { renderButton }
+      </CardSection>
+    </Card>
 
-         <CardSection>
-            <TouchableOpacity onPress={ () => Actions.Register()}>
-              <Text style={styles.successTextStyle}>
-                Create new account
-              </Text>  
-            </TouchableOpacity>
+  </Card>
+
+  <View style={styles.createButtonCard}>
+    <Card>   
+         <CardSection style={styles.createCardSectionStyle}>
+                <Button onPress={ () => Actions.Register()}  
+                        buttonStyle={ styles.createButton} 
+                        textStyle={styles.createText}
+                        >
+                  Create new account
+                </Button>
         </CardSection>
-
       </Card>
+   </View>   
+    </Image>  
     );
   }
 }
 
-const styles = {
-  errorTextStyle: {
-    fontSize: 20,
-    alignSelf: 'center',
-    color: 'red'
-  },
-  successTextStyle: {
-      fontSize: 20,
-      alignSelf: 'center',
-      color: 'green'
-  }
-};
+
 
 const mapStateToProps = ({ auth }) => {
   const { email, password, error, loading, success } = auth;

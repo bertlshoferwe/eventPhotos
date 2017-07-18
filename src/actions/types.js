@@ -13,8 +13,7 @@ export const CREATE_EVENT = 'create_event';
 export const CREATE_EVENT_SUCCESS = 'create_event_success';
 export const CREATE_EVENT_FAIL = 'create_event_fail';
 
-export const EVENTS_FETCH_SUCCESS = 'event_fetch_success';
+export const FETCHING_EVENTS = 'fetching_events';
 export const JOIN_EVENT_PIN = 'joine_event_pin';
-
-export const SELECTED_EVENT_PIN = 'selected_event_pin';
-
+export const FETCHING_JOINED_SUCCESS = 'fetching_joined_success';
+export const FETCHING_JOINED_EVENTS = 'fetcing_joined_events';
