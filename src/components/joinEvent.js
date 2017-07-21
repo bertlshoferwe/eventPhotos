@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { BackHandler, ToastAndroid, Dimensions, Image } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import { connect } from 'react-redux';
@@ -89,7 +89,7 @@ class JoinEvent extends Component {
               <Card>
                 <CardSection>
                     <Input
-                        label=  {<Icon name="md-pricetag" size={40} />}
+                        label=  {<Icon name="fiber-pin" size={40} />}
                         placeholder="EX. 1234"
                         onChangeText={this.onPinChange.bind(this)}
                         value={this.props.joinPin}

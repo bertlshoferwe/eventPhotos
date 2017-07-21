@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Actions} from 'react-native-router-flux';
 import { Text, BackHandler, ToastAndroid, View, Dimensions, Image } from 'react-native';
 import { connect } from 'react-redux';
@@ -103,7 +103,7 @@ class CreateEvent extends Component {
           <Card>
             <CardSection >
               <Input
-                label= {<Icon name="md-create" size={40} />}
+                label= {<Icon name="create" size={40} />}
                 placeholder="My Event Name"
                 onChangeText={this.onEventNameChange.bind(this)}
                 value={this.props.eventName}
@@ -114,7 +114,7 @@ class CreateEvent extends Component {
             <Card>
             <CardSection>
                 <Input
-                label= {<Icon name="md-pricetag" size={40} />}
+                label= {<Icon name="fiber-pin" size={40} />}
                 placeholder="EX. 1234"
                 onChangeText={this.onPinChange.bind(this)}
                 value={this.props.eventPin}

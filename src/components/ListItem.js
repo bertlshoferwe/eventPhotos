@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, TouchableWithoutFeedback, View, Dimensions,Image } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Actions } from 'react-native-router-flux';
 import { Card, CardSection, Button } from './common';
 
@@ -26,7 +26,8 @@ onLayout(e) {
   render() {
 const styles = {
   cardStyle:{
-          height:200,
+          height:295,
+          zIndex: -1,
           alignItems:'center',
           flexDirection: 'column', 
           width: this.state.width-20,
@@ -35,13 +36,13 @@ const styles = {
           position: 'absolute',
           top: 0,
           left: 0,
-          bottom: 40,
+          bottom: 80,
           right: 0,
   },
   textStyle: {
           position: 'absolute',
-          bottom: 10,
-          fontSize: 20,
+          bottom: 25,
+          fontSize: 25,
           paddingLeft: 15,
           fontWeight: '900',
           color:'#1b365d',
@@ -50,7 +51,7 @@ const styles = {
   floatingButtonStyle:{
           left: 10,
           width: 70,
-          bottom: 15,
+          bottom: 45,
           height: 70,
           borderRadius: 50,
           position: 'absolute',
@@ -59,7 +60,7 @@ const styles = {
   floatingButtonText:{
           color:'#c7c8ca',
           fontSize: 25,
-          marginTop: 6,
+          marginTop: 9,
           paddingTop: 0,
           paddingBottom: 0,
           fontWeight: '100',
@@ -79,7 +80,7 @@ const styles = {
                           buttonStyle = { styles.floatingButtonStyle } 
                           textStyle = { styles.floatingButtonText } 
                         >
-                      <Icon name="md-camera" size={50} />
+                      <Icon name="add-a-photo" size={47} />
                   </Button>  
                
                   <Text style={styles.textStyle}>

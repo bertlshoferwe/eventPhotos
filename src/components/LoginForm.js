@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Text, View, TouchableOpacity, Image, Dimensions, BackHandler,ToastAndroid } from 'react-native';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser, registerUser } from '../actions';
@@ -80,12 +80,20 @@ class LoginForm extends Component {
               width: this.state.width, 
               height: this.state.height
             },
-            inputCard: {
-               width: this.state.width-30,
-              backgroundColor:'#1b365d'
+            inputMargin: {
+              marginTop: 20,
+              marginLeft: 40,
+              marginRight: 40
+            },
+            inputMarginTop: { 
+              marginLeft: 40,
+              marginRight: 40
             },
             loginButtonCardSectionStyle:{
-              backgroundColor:'#ccaed0'
+              backgroundColor:'#ccaed0',
+              marginTop: 20,
+              marginLeft: 40,
+              marginRight: this.state.width/2
             },
             loginButton:{
               borderColor:'#ccaed0',
@@ -96,15 +104,13 @@ class LoginForm extends Component {
               fontSize: 20,
               fontWeight: '900',
             },
-            createButtonCard: {
-              bottom: 0,
-              height: 50,
-              position: 'absolute',
-              width: this.state.width,
-            },
             createCardSectionStyle: {
               padding: 2, 
               backgroundColor: '#ece3a5',
+              bottom: 1,
+              height: 40,
+              position: 'absolute',
+              width: this.state.width-40,
             },
             createButton:{
               borderColor:'#ece3a5',
@@ -143,25 +149,25 @@ class LoginForm extends Component {
     const errorMessage = (!this.props.error) ? 
                                                           <View/>
                                                   :
-                                                          <Card> 
-                                                            <CardSection> 
+                                                          
+                                                            <CardSection style={styles.inputMargin}> 
                                                               <Text style={styles.errorInfo}>
                                                                 {this.props.error}
                                                               </Text>
                                                             </CardSection>
-                                                           </Card>
+                                                           
                                                       ;    
 
     const successMessage = (!this.props.success) ? 
                                                       <View/>
                                               :
-                                                      <Card>
-                                                        <CardSection>
+                                                      
+                                                        <CardSection style={styles.inputMargin}>
                                                             <Text style={styles.successInfo}>
                                                               {this.props.success}
                                                             </Text>
                                                         </CardSection>
-                                                      </Card>
+                                                      
                                                   ;                                                                                                    
 
 
@@ -173,55 +179,53 @@ class LoginForm extends Component {
   source={require('./images/background1.jpg')} 
   >
 
-    <Card style={styles.inputCard}> 
+    
 
-      <Card>
-        <CardSection>
+      
+        <CardSection style={styles.inputMarginTop }>
           <Input
-            label= {<Icon name="md-mail" size={40} />}
+            label= {<Icon name="email" size={40} />}
             placeholder="email@gmail.com"
             onChangeText={this.onEmailChange.bind(this)}
             value={this.props.email}
           />
         </CardSection>
-    </Card>
+    
 
-    <Card>    
-        <CardSection>
+       
+        <CardSection style={styles.inputMargin}>
           <Input
             secureTextEntry
-            label= {<Icon name="md-lock" size={40} />}
+            label= {<Icon name="lock" size={40} />}
             placeholder="password"
             onChangeText={this.onPasswordChange.bind(this)}
             value={this.props.password}
           />
         </CardSection>
-    </Card>
+    
 
     
     {errorMessage}
     {successMessage}
 
-    <Card>
+   
       <CardSection style={styles.loginButtonCardSectionStyle}>    
           { renderButton }
       </CardSection>
-    </Card>
+    
 
-  </Card>
+  
 
-  <View style={styles.createButtonCard}>
-    <Card>   
-         <CardSection style={styles.createCardSectionStyle}>
+    
+         <Card style={styles.createCardSectionStyle}>
                 <Button onPress={ () => Actions.Register()}  
                         buttonStyle={ styles.createButton} 
                         textStyle={styles.createText}
                         >
                   Create new account
                 </Button>
-        </CardSection>
-      </Card>
-   </View>   
+        </Card>
+       
     </Image>  
     );
   }

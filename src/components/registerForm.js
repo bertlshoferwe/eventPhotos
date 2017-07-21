@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, Image, Dimensions, BackHandler, ToastAndroid } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { emailChanged, passwordChanged, registerUser } from '../actions';
@@ -67,12 +67,20 @@ const styles = {
     width: this.state.width, 
     height: this.state.height,
   },
-  cardStyle: {
-    width: this.state.width-30,
-    backgroundColor:'#1b365d'
+  inputMargin: {
+    marginTop: 20,
+    marginLeft: 40,
+    marginRight: 40
+  },
+  inputMarginTop: { 
+    marginLeft: 40,
+    marginRight: 40
   },
   registerCardSectionStyle:{
-    backgroundColor:'#ccaed0'
+    backgroundColor:'#ccaed0',
+    marginTop: 20,
+    marginLeft: 40,
+    marginRight: this.state.width/2
   },
   registerButton:{
     backgroundColor:'#ccaed0',
@@ -105,13 +113,13 @@ const styles = {
       const errorMessage = (!this.props.registerError) ? 
                                                       <View/>
                                                     :
-                                                      <Card> 
-                                                        <CardSection> 
+                                                       
+                                                        <CardSection style={styles.inputMargin}> 
                                                           <Text style={styles.errorTextStyle}>
                                                             {this.props.registerError}
                                                           </Text>
                                                         </CardSection>
-                                                      </Card>
+                                                      
                                                         ;                                                      
 
 
@@ -122,38 +130,34 @@ const styles = {
       style={ styles.backgroundImage }
       source={require('./images/background1.jpg')} 
     >   
-        <Card style={styles.cardStyle}>  
-          <Card>
-            <CardSection>
+        
+            <CardSection style={ styles.inputMarginTop }>
               <Input
-                label= {<Icon name="md-mail" size={40} />}
+                label= {<Icon name="email" size={40} />}
                 placeholder="email@gmail.com"
                 onChangeText={this.onEmailChange.bind(this)}
                 value={this.props.email}
               />
             </CardSection>
-          </Card>  
-
-          <Card>
-            <CardSection>
+          
+            <CardSection style={ styles.inputMargin }>
               <Input
                 secureTextEntry
-                label= {<Icon name="md-lock" size={40} />}
+                label= {<Icon name="lock" size={40} />}
                 placeholder="password"
                 onChangeText={this.onPasswordChange.bind(this)}
                 value={this.props.password}
               />
             </CardSection>
-          </Card>
+          
           
               {errorMessage}   
 
-          <Card>
+          
             <CardSection style={styles.registerCardSectionStyle}>
               { renderButton }
             </CardSection>
-          </Card>      
-      </Card>
+          
   </Image>
     );
   }

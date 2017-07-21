@@ -17,19 +17,20 @@ class RouterComponent extends Component {
   render() {
   return (
     <Router>
+      
       <Scene key="SplashScreen">
         <Scene key="splash" component={Splash} hideNavBar/>
       </Scene>
 
-      <Scene key="auth" hideNavBar >
-        <Scene key="login" component={LoginForm} title="Event Photos" type={ActionConst.RESET} />
-        <Scene key="Register" component={RegisterForm} title="Register"/>
+      <Scene key="auth" >
+        <Scene key="login" component={LoginForm} title="Event Photos" hideNavBar />
+        <Scene key="Register" component={RegisterForm} title="Register" hideNavBar />
       </Scene>
 
-      <Scene key="main" hideNavBar >
-        <Scene key="CurrentEvents" component={CurrentEvent} initial />
-        <Scene key="JoinEvent" component={JoinEvent} title="Join Event" />
-        <Scene key="CreateEvent" component={CreateEvent} title="Create Event" />
+      <Scene key="main"  >
+        <Scene key="CurrentEvents" component={CurrentEvent} initial hideNavBar />
+        <Scene key="JoinEvent" component={JoinEvent} title="Join Event" hideNavBar />
+        <Scene key="CreateEvent" component={CreateEvent} title="Create Event" hideNavBar />
         <Scene key="ShowCamera" component={Picture} hideNavBar/>
       </Scene>  
 

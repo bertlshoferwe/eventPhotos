@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { ListView, Image,Dimensions, BackHandler, ToastAndroid, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
@@ -95,6 +95,7 @@ render() {
         cardStyle:{
             height:this.state.height-100,
             width: this.state.width-20,
+            zIndex: -1,
           },
           imageSection:{
             flex: 1,
@@ -139,7 +140,7 @@ render() {
           optionStyle:{
             zIndex:1,
             right: 20,
-            bottom: 90,
+            bottom: 110,
             width: 200,
             height:150,
             position: 'absolute',
@@ -190,7 +191,7 @@ render() {
                                                         buttonStyle = { styles.floatingButtonStyle } 
                                                         textStyle = { styles.floatingButtonText } 
                                                       >
-                                                        <Icon name="md-add" size={45} />
+                                                        <Icon name="add" size={45} />
                                                   </Button>
                                               </View>  
                                             ;   
