@@ -17,3 +17,6 @@ export const FETCHING_EVENTS = 'fetching_events';
 export const JOIN_EVENT_PIN = 'joine_event_pin';
 export const FETCHING_JOINED_SUCCESS = 'fetching_joined_success';
 export const FETCHING_JOINED_EVENTS = 'fetcing_joined_events';
+
+export const FETCHING_IMAGES = 'fetching_images';
+export const FETCHING_IMAGES_SUCCESS = 'fetching-images_success';

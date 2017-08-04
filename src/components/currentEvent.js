@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { ListView, Image,Dimensions, BackHandler, ToastAndroid, View, Text } from 'react-native';
+import { ListView, Image,Dimensions, BackHandler, ToastAndroid, View, Text, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
 import { eventsFetch } from '../actions';
-import {Card, CardSection, Button, Spinner} from './common';
-import ListItem from './ListItem';
+import { Card, CardSection, Button, Spinner, IconButton } from './common';
+import ListItem from './listItems/currentListItem';
 
 class CurrentEvent extends Component {
         constructor(props) {
@@ -37,12 +37,6 @@ class CurrentEvent extends Component {
                         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
                     }
 
-
-        componentWillUnmount() {
-                        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-                    }
-
-
         handleBackButton() {
                             if(!this.state.backPress) {
                                       ToastAndroid.show('Back again to exit', ToastAndroid.SHORT);
@@ -56,8 +50,6 @@ class CurrentEvent extends Component {
                                       return false;
                           };
                       };
-
-
 
         componentWillReceiveProps(nextProps) {
                                   this.createDataSource(nextProps);
@@ -90,75 +82,64 @@ class CurrentEvent extends Component {
                     });
                   }
 
-render() {   
+render() {  
         const styles = {
-        cardStyle:{
-            height:this.state.height-100,
-            width: this.state.width-20,
-            zIndex: -1,
-          },
-          imageSection:{
-            flex: 1,
-            alignItems: "stretch"
-          },
-          Image:{
-            flex: 1,
-          },
-          backgroundImage: {
-            flex:1,
-            backgroundColor: '#c7c8ca',
-            width: this.state.width, 
-            height: this.state.height
-          },
-          background: {
-            paddingTop: 40,
-            alignItems: 'center',
-          },
-          loadingCardStyle: {
-            width: 70,
-            height: 70,
-            borderRadius: 10,
-            backgroundColor: '#fff'
-          },
-          floatingButtonStyle:{
-            right: 20,
-            width: 60,
-            bottom: 40,
-            height: 60,
-            borderRadius: 30,
-            position: 'absolute',
-            backgroundColor:'#ece3a5',
-          },
-          floatingButtonText:{
-            color:'#1b365d',
-            fontSize: 25,
-            marginTop: 6,
-            paddingTop: 0,
-            paddingBottom: 0,
-            fontWeight: '100',
-          },
-          optionStyle:{
-            zIndex:1,
-            right: 20,
-            bottom: 110,
-            width: 200,
-            height:150,
-            position: 'absolute',
-            flexDirection: 'column',
-            borderColor: 'rgba(52, 52, 52, 0.0)',
-            backgroundColor: 'rgba(52, 52, 52, 0.0)'
-          },
-          floatingoption:{
-            paddingTop:10,
-            borderRadius: 30,
-          },
-          floatingText:{
-            fontSize: 16,
-            color: '#000',
-            textAlign:'right',
-            fontWeight: '900',
-          }, 
-        }
+                        cardStyle:{
+                            height:this.state.height-100,
+                            width: this.state.width-20,
+                            zIndex: -1,
+                          },
+                          imageSection:{
+                            flex: 1,
+                            alignItems: "stretch"
+                          },
+                          Image:{
+                            flex: 1,
+                          },
+                          backgroundImage: {
+                            flex:1,
+                            backgroundColor: '#c7c8ca',
+                            width: this.state.width, 
+                            height: this.state.height,
+                            backgroundColor:'#009389'
+                          },
+                          background: {
+                            paddingTop: 40,
+                            alignItems: 'center',
+                          },
+                          loadingCardStyle: {
+                            width: 70,
+                            height: 70,
+                            borderRadius: 10,
+                            backgroundColor: '#fff'
+                          },
+                          floatingButtonStyle:{
+                            right: 20,
+                            bottom: 40,
+                            position: 'absolute',
+                          },
+                          optionStyle:{
+                            zIndex:1,
+                            right: 20,
+                            bottom: 110,
+                            width: 200,
+                            height:150,
+                            position: 'absolute',
+                            flexDirection: 'column',
+                            borderColor: 'rgba(52, 52, 52, 0.0)',
+                            backgroundColor: 'rgba(52, 52, 52, 0.0)'
+                          },
+                          floatingoption:{
+                            paddingTop:10,
+                            borderRadius: 30,
+                          },
+                          floatingText:{
+                            fontSize: 16,
+                            color: '#000',
+                            textAlign:'right',
+                            fontWeight: '900',
+                          }, 
+                        }
 
         const renderListItems = (this.props.joinedEvent.length > 0)?
                                                   <ListView
@@ -185,14 +166,13 @@ render() {
                                             
                                             <View>
                                                 {renderListItems}
-                                                  
-                                                  <Button 
-                                                        onPress={ this.setOptionsVisible } 
-                                                        buttonStyle = { styles.floatingButtonStyle } 
-                                                        textStyle = { styles.floatingButtonText } 
-                                                      >
-                                                        <Icon name="add" size={45} />
-                                                  </Button>
+
+                                                <IconButton  
+                                                        buttonStyle={styles.floatingButtonStyle}
+                                                        onpress={ this.setOptionsVisible }
+                                                        name="blur-on" 
+                                                        size={40}
+                                                        />
                                               </View>  
                                             ;   
 
@@ -224,13 +204,11 @@ render() {
                                                       
                                                ;                                
                                                                                                                                
-          
 return (
 
-          <Image 
+          <View 
               onLayout={this.onLayout}
               style={ styles.backgroundImage }
-              source={require('./images/background1.jpg')} 
             >
            <View style={ styles.background }> 
 
@@ -240,7 +218,7 @@ return (
 
 
           </View>            
-        </Image>    
+        </View>    
           );
         }
       }
@@ -252,8 +230,9 @@ return (
           const joinedEvent = _.map(state.joinedEvent.listItems, (val, uid) => { 
             return { ...val, uid };
           });
+          
 
-          return{ joinedEvent, loading };
+          return{ joinedEvent, loading, };
         };
 
 export default connect(mapStateToProps, { eventsFetch })(CurrentEvent);

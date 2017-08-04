@@ -36,33 +36,33 @@ class Splash extends Component {
   render() {
 
 const styles = {
-  backgroundImage: {
-        flex:1,
-        alignItems: 'center',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        width: this.state.width, 
-        height: this.state.height,
-      },
-  cardStyle: {
-        alignItems: 'center',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        width: 70,
-        height: 70,
-        backgroundColor:'#ece3a5',
-        borderRadius: 10,
-  },
-  cardSectionStyle:{
-        backgroundColor:'#ece3a5'
-  },
-}
+                backgroundImage: {
+                      flex:1,
+                      alignItems: 'center',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      width: this.state.width, 
+                      height: this.state.height,
+                      backgroundColor:'#009389'
+                    },
+                cardStyle: {
+                      alignItems: 'center',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      width: 70,
+                      height: 70,
+                      backgroundColor:'#ece3a5',
+                      borderRadius: 10,
+                },
+                cardSectionStyle:{
+                      backgroundColor:'#ece3a5'
+                },
+              }
 
     return (
-            <Image
+            <View
                   onLayout={this.onLayout} 
-                  style={ styles.backgroundImage }
-                  source={require('./images/background1.jpg')}> 
+                  style={ styles.backgroundImage } >
 
                 <Card style={ styles.cardStyle }>
                     <CardSection style={ styles.cardSectionStyle }>
@@ -70,7 +70,7 @@ const styles = {
                     </CardSection>
                 </Card>   
 
-           </Image>
+           </View>
     );
   }
 } 

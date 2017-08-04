@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image, Dimensions, BackHandler, ToastAndroid } from 'react-native';
+import { Text, View, TouchableOpacity, Image, Dimensions, BackHandler, ToastAndroid, TouchableHighlight } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { emailChanged, passwordChanged, registerUser } from '../actions';
-import { Card, CardSection, Input, Button, Spinner } from './common';
+import { Card, CardSection, Input, Button, Spinner, IconButton } from './common';
 
 class RegisterForm extends Component {
   constructor(props) {
@@ -59,46 +59,61 @@ onLayout(e) {
   render() {
 
 const styles = {
-  backgroundImage: {
-    flex:1,
-    alignItems: 'center',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    width: this.state.width, 
-    height: this.state.height,
-  },
-  inputMargin: {
-    marginTop: 20,
-    marginLeft: 40,
-    marginRight: 40
-  },
-  inputMarginTop: { 
-    marginLeft: 40,
-    marginRight: 40
-  },
-  registerCardSectionStyle:{
-    backgroundColor:'#ccaed0',
-    marginTop: 20,
-    marginLeft: 40,
-    marginRight: this.state.width/2
-  },
-  registerButton:{
-    backgroundColor:'#ccaed0',
-    borderColor:'#ccaed0'
-  },
-  registerText:{
-    color:'#fff',
-    fontSize: 20,
-    fontWeight: '900',
-  },
-  errorTextStyle: {
-    flex:1,
-    textAlign: 'center',
-    color: 'red',
-    paddingTop: 2,
-    paddingBottom: 2
-  },
-};
+                backgroundImage: {
+                  flex:1,
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  width: this.state.width, 
+                  height: this.state.height,
+                  backgroundColor:'#009389'
+                },
+                logoImage: {
+                    alignSelf: 'center',
+                    width: this.state.width -40,
+                    height: this.state.height -520,
+                    borderRadius: 10,
+                    backgroundColor: '#fff'
+                  },
+                inputMargin: {
+                  marginTop: 20,
+                  marginLeft: 40,
+                  marginRight: 40
+                },
+                inputMarginTop: { 
+                  marginTop: 70,
+                  marginLeft: 40,
+                  marginRight: 40
+                },
+                registerCardSectionStyle:{
+                  backgroundColor:'#ccaed0',
+                  marginTop: 20,
+                  marginLeft: 40,
+                  marginRight: this.state.width/2
+                },
+                registerButton:{
+                  backgroundColor:'#ccaed0',
+                  borderColor:'#ccaed0'
+                },
+                registerText:{
+                  color:'#fff',
+                  fontSize: 20,
+                  fontWeight: '900',
+                },
+                errorTextStyle: {
+                  flex:1,
+                  textAlign: 'center',
+                  color: 'red',
+                  paddingTop: 2,
+                  paddingBottom: 2
+                },
+                topLeft: {
+                  position: 'absolute',
+                  top: 40,
+                  left: 20,
+                  backgroundColor: 'transparent'
+                },
+              };
       const renderButton = (this.props.loading) ? 
                                                     <Spinner size="large" />
                                               :
@@ -120,17 +135,27 @@ const styles = {
                                                           </Text>
                                                         </CardSection>
                                                       
-                                                        ;                                                      
-
-
-
+                                                        ; 
+                                                        
     return (
-  <Image 
+  <View 
       onLayout={this.onLayout}
       style={ styles.backgroundImage }
-      source={require('./images/background1.jpg')} 
     >   
-        
+
+        <Image 
+          source={require('./images/logo2.png')}
+          style={ styles.logoImage } 
+          />
+          
+        <IconButton  
+              buttonStyle={ styles.topLeft }
+              onpress={ () => Actions.pop() }
+              name="arrow-back" 
+              color='#fff'
+              size={40}
+              />
+
             <CardSection style={ styles.inputMarginTop }>
               <Input
                 label= {<Icon name="email" size={40} />}
@@ -158,7 +183,7 @@ const styles = {
               { renderButton }
             </CardSection>
           
-  </Image>
+  </View>
     );
   }
 }

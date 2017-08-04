@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { BackHandler, ToastAndroid, Dimensions, Image } from 'react-native';
+import { View, BackHandler, ToastAndroid, Dimensions, Image } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { joinEvent, joinPinChange } from '../actions'
-import { Card, CardSection, Input, Button } from './common';
+import { Card, CardSection, Input, Button, IconButton } from './common';
 
 class JoinEvent extends Component {
     constructor(props) {
@@ -52,42 +52,58 @@ class JoinEvent extends Component {
   render() {
 
     const styles = {
-      backgroundImage: {
-        flex:1,
-        alignItems: 'center',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        width: this.state.width, 
-        height: this.state.height,
-      },
-      cardStyle: {
-        width: this.state.width-30,
-        backgroundColor:'#1b365d'
-      },
-      cardSectionStyle:{
-        backgroundColor:'#ccaed0'
-      },
-      joinButton:{
-        backgroundColor:'#ccaed0',
-        borderColor:'#ccaed0'
-      },
-      joinButtonText:{
-        color:'#fff',
-        fontSize: 20,
-        fontWeight: '900',
-      },
-    };
+                    backgroundImage: {
+                      flex:1,
+                      alignItems: 'center',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      width: this.state.width, 
+                      height: this.state.height,
+                      backgroundColor:'#009389'
+                    },
+                    joinButton:{
+                      backgroundColor:'#ccaed0',
+                      borderColor:'#ccaed0'
+                    },
+                    joinButtonText:{
+                      color:'#fff',
+                      fontSize: 20,
+                      fontWeight: '900',
+                    },
+                    inputMarginTop: { 
+                      marginLeft: 40,
+                      marginRight: 40
+                    },
+                    joinCardSectionStyle:{
+                      backgroundColor:'#ccaed0',
+                      marginTop: 20,
+                      marginLeft: 40,
+                      marginRight: this.state.width/2
+                    },
+                    topLeft: {
+                      position: 'absolute',
+                      top: 40,
+                      left: 20,
+                      backgroundColor: 'transparent'
+                    }
+                  };
 
     return (
 
-      <Image 
+      <View
           onLayout={this.onLayout}
           style={ styles.backgroundImage }
-          source={require('./images/background1.jpg')} 
-        >  
-            <Card style = { styles.cardStyle }>
-              <Card>
-                <CardSection>
+          >
+
+          <IconButton  
+              buttonStyle={ styles.topLeft }
+              onpress={ () => Actions.pop() }
+              name="arrow-back" 
+              color='#fff'
+              size={40}
+              />  
+            
+                <CardSection style={ styles.inputMarginTop }>
                     <Input
                         label=  {<Icon name="fiber-pin" size={40} />}
                         placeholder="EX. 1234"
@@ -95,8 +111,8 @@ class JoinEvent extends Component {
                         value={this.props.joinPin}
                     />
                 </CardSection>
-              </Card>
-                <CardSection style = { styles.cardSectionStyle }>
+              
+                <CardSection style={styles.joinCardSectionStyle}>
                     <Button onPress={this.joinButtonPress.bind(this)}
                             buttonStyle={ styles.joinButton} 
                             textStyle={styles.joinButtonText}
@@ -104,8 +120,8 @@ class JoinEvent extends Component {
                         Join Event
                     </Button>
                 </CardSection>
-            </Card>
-          </Image>  
+           
+          </View>  
     );
   }
 }

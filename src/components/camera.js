@@ -6,6 +6,7 @@ import { Actions } from 'react-native-router-flux';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
 import firebase from 'firebase';
+import { IconButton } from './common'
 
 class CameraRoute extends Component {
   constructor(props) {
@@ -20,7 +21,6 @@ class CameraRoute extends Component {
                   backPress:false,
                   width: Dimensions.get('window').width,
                   height: Dimensions.get('window').height,
-
                   };
     this.uploadImage = this.uploadImage.bind(this);
     this.takePicture = this.takePicture.bind(this);
@@ -140,90 +140,112 @@ uploadImage = (uri = this.state.path, mime = 'image/pjpeg') => {
 
 
   render() {
+    const {joinPin}=this.props
+    const styles = {
+                    container: {
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: '#000',
+                    },
+                    preview: {
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
+                      height: this.state.height,
+                      width: this.state.width
+                    },
+                    bottomCenter: {
+                      position: 'absolute',
+                      bottom: 40,
+                      width: 70,
+                      height: 70,
+                      borderRadius: 35,
+                      borderWidth: 5,
+                      borderColor: '#FFF',
+                      backgroundColor: 'transparent'
+                    },
+                    cameraOptions: {
+                      flexDirection: 'column',
+                      justifyContent: 'space-around',
+                      alignSelf: 'flex-end',
+                      position: 'absolute',
+                      top: 20,
+                      right: 20,
+                      backgroundColor: 'transparent'
+                    },
+                    cameraOptionSpacing: {
+                      paddingTop: 20,
+                      backgroundColor: 'transparent'
+                    },
+                    topLeft: {
+                      position: 'absolute',
+                      top: 40,
+                      left: 20,
+                      backgroundColor: 'transparent'
+                    },
+                    topRight: {
+                      position: 'absolute',
+                      top: 40,
+                      right: 20,
+                      backgroundColor: 'transparent'
+                    },
+                    bottomLeft: {
+                      position: 'absolute',
+                      bottom: 40,
+                      left: 50,
+                      backgroundColor: 'transparent'
+                    }
+                };
 
-    const styles = StyleSheet.create({
-          container: {
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#000',
-          },
-          preview: {
-            flex: 1,
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            height: this.state.height,
-            width: this.state.width
-          },
-          bottomCenter: {
-            position: 'absolute',
-            bottom: 40,
-            width: 70,
-            height: 70,
-            borderRadius: 35,
-            borderWidth: 5,
-            borderColor: '#FFF',
-                        backgroundColor: 'transparent'
-          },
-          cameraOptions: {
-            flexDirection: 'column',
-            justifyContent: 'space-around',
-            alignSelf: 'flex-end',
-            position: 'absolute',
-            top: 20,
-            right: 20,
-            backgroundColor: 'transparent'
-          },
-          cameraOptionSpacing: {
-            paddingTop: 20
-          },
-          topLeft: {
-            position: 'absolute',
-            top: 40,
-            left: 20,
-            backgroundColor: 'transparent'
-          },
-          topRight: {
-            position: 'absolute',
-            top: 40,
-            right: 20,
-            backgroundColor: 'transparent'
-          },
-          bottomLeft: {
-            position: 'absolute',
-            bottom: 40,
-            left: 50,
-          }
-    });
           let contents = (!this.state.path) ?
                                                 <Camera
                                                   ref={(cam) => { this.camera = cam; }}
                                                   style={styles.preview}
                                                   type={this.state.cameraView}
                                                   captureMode={Camera.constants.CaptureMode.still}
-                                                  aspect={Camera.constants.Aspect.stretch}
+                                                  aspect={Camera.constants.Aspect.fill}
                                                   captureTarget={Camera.constants.CaptureTarget.temp}
                                                   orientation="auto"
                                                   flashMode={ this.state.cameraFlash }   
                                                 >
+                                              
+                                                      <IconButton  
+                                                              buttonStyle={styles.topLeft}
+                                                              onpress={ () => Actions.pop() }
+                                                              name="arrow-back" 
+                                                              size={40}
+                                                              color="#fff"
+                                                              />
 
-                                                  <TouchableHighlight onPress={() => Actions.pop()} style={styles.topLeft}>
-                                                        <Icon name= 'arrow-back' size={40} color="#fff"/>
-                                                      </TouchableHighlight>
+                                                  <View style={ styles.cameraOptions }>
 
-                                                  <View style={styles.cameraOptions}>
-                                                      <TouchableHighlight onPress={this.switchCamera} style={styles.cameraOptionSpacing}>
-                                                        <Icon name= {this.state.cameraViewIcon} size={40} color="#fff"/>
-                                                      </TouchableHighlight>
+                                                    <IconButton  
+                                                              buttonStyle={ styles.cameraOptionSpacing }
+                                                              onpress={ this.switchCamera }
+                                                              name= { this.state.cameraViewIcon }
+                                                              size={40}
+                                                              color="#fff"
+                                                              />
 
-                                                      <TouchableHighlight onPress={this.switchFlash} style={styles.cameraOptionSpacing}>
-                                                        <Icon name= {this.state.cameraFlashIcon} size={40} color="#fff"/>
-                                                      </TouchableHighlight>
+                                                        <IconButton  
+                                                              buttonStyle={ styles.cameraOptionSpacing }
+                                                              onpress={ this.switchFlash }
+                                                              name= { this.state.cameraFlashIcon }
+                                                              size={40}
+                                                              color="#fff"
+                                                              />
+
                                                   </View>
 
-                                                      <TouchableHighlight onPress={Actions.CameraRoll} style={styles.bottomLeft}>
-                                                        <Icon name= 'photo-library' size={40} color="#fff"/>
-                                                      </TouchableHighlight>
+                                                      <IconButton  
+                                                              buttonStyle={ styles.bottomLeft }
+                                                              onpress={ () => Actions.Gallery({joinPin}) }
+                                                              name= 'photo-library'
+                                                              size={40}
+                                                              color="#fff"
+                                                              />
+
                                                       <TouchableHighlight
                                                               style={styles.bottomCenter}
                                                               onPress={this.takePicture}
@@ -236,21 +258,26 @@ uploadImage = (uri = this.state.path, mime = 'image/pjpeg') => {
                                                 </Camera>
                                     :
                                             <View>
+
                                                 <Image
                                                   source={{ uri: this.state.path }}
                                                   style={styles.preview}
                                                 />
-                                                <Text
-                                                  style={ styles.topLeft }
-                                                  onPress={() => this.setState({ path: '' })}
-                                                >
-                                                  <Icon name= 'clear' size={40} color="#fff"/>
-                                                </Text>
-                                                <Text
-                                                  style={ styles.topRight }
-                                                  onPress={()=> this.uploadImage()}>
-                                                  <Icon name= 'save' size={40} color="#fff"/>
-                                                </Text>  
+                                                <IconButton  
+                                                        buttonStyle={ styles.topLeft }
+                                                        onpress={ () => this.setState({ path: '' }) }
+                                                        name= 'clear'
+                                                        size={40}
+                                                        color="#fff"
+                                                        />
+                                                <IconButton  
+                                                        buttonStyle={ styles.topRight }
+                                                        onpress={ ()=> this.uploadImage() }
+                                                        name= 'save'
+                                                        size={40}
+                                                        color="#fff"
+                                                        />
+
                                               </View>
 
                       

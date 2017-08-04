@@ -4,7 +4,7 @@ import {Actions} from 'react-native-router-flux';
 import { Text, BackHandler, ToastAndroid, View, Dimensions, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { eventCreate, eventChange, pinChange} from '../actions'
-import { Card, CardSection, Input, Button, Spinner } from './common';
+import { Card, CardSection, Input, Button, Spinner, IconButton } from './common';
 
 class CreateEvent extends Component {
   constructor(props) {
@@ -57,31 +57,46 @@ class CreateEvent extends Component {
         
         
         const styles = {
-      backgroundImage: {
-        flex:1,
-        alignItems: 'center',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        width: this.state.width, 
-        height: this.state.height,
-      },
-      cardStyle: {
-        width: this.state.width-30,
-        backgroundColor:'#1b365d'
-      },
-      cardSectionStyle:{
-        backgroundColor:'#ccaed0'
-      },
-      createButton:{
-        backgroundColor:'#ccaed0',
-        borderColor:'#ccaed0'
-      },
-      createButtonText:{
-        color:'#fff',
-        fontSize: 20,
-        fontWeight: '900',
-      },
-    };
+                        backgroundImage: {
+                          flex:1,
+                          alignItems: 'center',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          width: this.state.width, 
+                          height: this.state.height,
+                          backgroundColor:'#009389'
+                        },
+                        createButton:{
+                          backgroundColor:'#ccaed0',
+                          borderColor:'#ccaed0'
+                        },
+                        createButtonText:{
+                          color:'#fff',
+                          fontSize: 20,
+                          fontWeight: '900',
+                        },
+                        inputMarginTop: { 
+                          marginLeft: 40,
+                          marginRight: 40
+                        },
+                        inputMargin: {
+                          marginTop: 20,
+                          marginLeft: 40,
+                          marginRight: 40
+                        },
+                        createCardSectionStyle:{
+                          backgroundColor:'#ccaed0',
+                          marginTop: 20,
+                          marginLeft: 40,
+                          marginRight: this.state.width/2
+                        },
+                        topLeft: {
+                          position: 'absolute',
+                          top: 40,
+                          left: 20,
+                          backgroundColor: 'transparent'
+                        }
+                      };
 
           const renderButton = (this.props.loading) ? 
                                                     <Spinner size="large" />
@@ -94,14 +109,20 @@ class CreateEvent extends Component {
 
 
     return (
-   <Image 
+   <View
         onLayout={this.onLayout}
         style={ styles.backgroundImage }
-        source={require('./images/background1.jpg')} 
       >       
-        <Card style={ styles.cardStyle }> 
-          <Card>
-            <CardSection >
+
+      <IconButton  
+              buttonStyle={ styles.topLeft }
+              onpress={ () => Actions.pop() }
+              name="arrow-back" 
+              color='#fff'
+              size={40}
+              />  
+        
+            <CardSection style={ styles.inputMarginTop } >
               <Input
                 label= {<Icon name="create" size={40} />}
                 placeholder="My Event Name"
@@ -109,10 +130,8 @@ class CreateEvent extends Component {
                 value={this.props.eventName}
               />
             </CardSection>
-            </Card>
             
-            <Card>
-            <CardSection>
+            <CardSection style={ styles.inputMargin } >
                 <Input
                 label= {<Icon name="fiber-pin" size={40} />}
                 placeholder="EX. 1234"
@@ -120,16 +139,12 @@ class CreateEvent extends Component {
                 value={this.props.eventPin}
               />
             </CardSection>
-            </Card>
-
-            <Card>
-            <CardSection style={styles.cardSectionStyle}>
+            
+            <CardSection style={styles.createCardSectionStyle}>
                 { renderButton }
             </CardSection>
 
-          </Card>
-       </Card>   
- </Image>    
+ </View>    
     );
   }
 }

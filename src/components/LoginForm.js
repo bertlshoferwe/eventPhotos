@@ -7,6 +7,7 @@ import { emailChanged, passwordChanged, loginUser, registerUser } from '../actio
 import { Actions} from 'react-native-router-flux';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 
+
 class LoginForm extends Component {
         constructor(props) {
           super(props);
@@ -72,69 +73,78 @@ class LoginForm extends Component {
   render() {
 
     const styles = {
-            backgroundImage: {
-              flex:1,
-              alignItems: 'center',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              width: this.state.width, 
-              height: this.state.height
-            },
-            inputMargin: {
-              marginTop: 20,
-              marginLeft: 40,
-              marginRight: 40
-            },
-            inputMarginTop: { 
-              marginLeft: 40,
-              marginRight: 40
-            },
-            loginButtonCardSectionStyle:{
-              backgroundColor:'#ccaed0',
-              marginTop: 20,
-              marginLeft: 40,
-              marginRight: this.state.width/2
-            },
-            loginButton:{
-              borderColor:'#ccaed0',
-              backgroundColor:'#ccaed0',
-            },
-            loginText:{
-              color:'#fff',
-              fontSize: 20,
-              fontWeight: '900',
-            },
-            createCardSectionStyle: {
-              padding: 2, 
-              backgroundColor: '#ece3a5',
-              bottom: 1,
-              height: 40,
-              position: 'absolute',
-              width: this.state.width-40,
-            },
-            createButton:{
-              borderColor:'#ece3a5',
-              backgroundColor: '#ece3a5',
-            },
-            createText:{
-              color:'#1b365d',
-              fontWeight: '500',
-            },
-            errorInfo: {
-              flex:1,
-              color: 'red',
-              paddingTop: 2,
-              paddingBottom: 2,
-              textAlign: 'center',
-            },
-            successInfo: {
-              flex:1,
-              paddingTop: 2,
-              color: 'green',
-              paddingBottom: 2,
-              textAlign: 'center',
-            }
-      };
+                    backgroundImage: {
+                      flex:1,
+                      alignItems: 'center',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      width: this.state.width, 
+                      height: this.state.height,
+                      backgroundColor:'#009389'
+                    },
+                    logoImage: {
+                      alignSelf: 'center',
+                      width: this.state.width -40,
+                      height: this.state.height -520,
+                      borderRadius: 10,
+                      backgroundColor: '#fff'
+                    },
+                    inputMargin: {
+                      marginTop: 20,
+                      marginLeft: 40,
+                      marginRight: 40
+                    },
+                    inputMarginTop: {
+                      marginTop: 70, 
+                      marginLeft: 40,
+                      marginRight: 40
+                    },
+                    loginButtonCardSectionStyle:{
+                      backgroundColor:'#ccaed0',
+                      marginTop: 20,
+                      marginLeft: 40,
+                      marginRight: this.state.width/2
+                    },
+                    loginButton:{
+                      borderColor:'#ccaed0',
+                      backgroundColor:'#ccaed0',
+                    },
+                    loginText:{
+                      color:'#fff',
+                      fontSize: 20,
+                      fontWeight: '900',
+                    },
+                    createCardSectionStyle: {
+                      padding: 2, 
+                      backgroundColor: '#ece3a5',
+                      bottom: 1,
+                      height: 40,
+                      position: 'absolute',
+                      width: this.state.width-40,
+                    },
+                    createButton:{
+                      borderColor:'#ece3a5',
+                      backgroundColor: '#ece3a5',
+                    },
+                    createText:{
+                      color:'#1b365d',
+                      fontWeight: '500',
+                    },
+                    errorInfo: {
+                      flex:1,
+                      color: 'red',
+                      paddingTop: 2,
+                      paddingBottom: 2,
+                      textAlign: 'center',
+                    },
+                    successInfo: {
+                      flex:1,
+                      paddingTop: 2,
+                      color: 'green',
+                      paddingBottom: 2,
+                      textAlign: 'center',
+                    }
+              };
 
       const renderButton = (this.props.loading) ? 
                                                       <Spinner size="large" />
@@ -168,19 +178,16 @@ class LoginForm extends Component {
                                                             </Text>
                                                         </CardSection>
                                                       
-                                                  ;                                                                                                    
-
-
-
+                                                  ;
+                                                  
     return (
-  <Image 
-  onLayout={this.onLayout}
-  style={ styles.backgroundImage }
-  source={require('./images/background1.jpg')} 
-  >
+  <View style={ styles.backgroundImage } onLayout={ this.onLayout } >
 
     
-
+        <Image 
+          source={require('./images/logo2.png')}
+          style={ styles.logoImage } 
+          />
       
         <CardSection style={styles.inputMarginTop }>
           <Input
@@ -226,7 +233,7 @@ class LoginForm extends Component {
                 </Button>
         </Card>
        
-    </Image>  
+    </View>  
     );
   }
 }
