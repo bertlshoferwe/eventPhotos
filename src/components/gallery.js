@@ -3,7 +3,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { View, BackHandler, ToastAndroid, Dimensions, Image, ListView } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import { IconButton } from './common';
-import { galleryFetch } from '../actions';
+import { setPin, galleryFetch } from '../actions';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import ListItem from './listItems/galleryListItem';
@@ -23,7 +23,7 @@ class Gallery extends Component {
   }
 
   componentWillMount() {
-            const joinPin = this.props.joinPin
+            const joinPin = this.props.selectedPin
             this.props.galleryFetch({joinPin});
             this.createDataSource(this.props);
   }
@@ -139,11 +139,12 @@ console.log(this.props.loading)
 
 const mapStateToProps = state => {
           const loading = state.fetchedImages.loading;
+          const selectedPin = state.fetchedImages.selectedPin.joinPin
           const fetchedImages =  _.map(state.fetchedImages.listItems, (val, uid) => { 
             return { ...val, uid };
           });
 
-          return{ fetchedImages, loading };
+          return{ fetchedImages, loading, selectedPin };
         };
 
-export default connect(mapStateToProps, { galleryFetch })(Gallery);
+export default connect(mapStateToProps, { setPin, galleryFetch })(Gallery);

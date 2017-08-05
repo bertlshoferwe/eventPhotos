@@ -1,11 +1,13 @@
 import {
   FETCHING_IMAGES,
-  FETCHING_IMAGES_SUCCESS
+  FETCHING_IMAGES_SUCCESS,
+  SELECTED_PIN
 } from '../actions/types';
 
 const INITIAL_STATE = {
   loading:false,
-  listItems: ''
+  listItems: '',
+  selectedPin: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -14,6 +16,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, loading: true};
     case FETCHING_IMAGES_SUCCESS:
       return { ...state, loading: false, listItems: action.payload};
+    case SELECTED_PIN:
+      return { ...state, selectedPin: action.payload};
     default:
       return state;
   }

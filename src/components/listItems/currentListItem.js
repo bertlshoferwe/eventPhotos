@@ -3,6 +3,9 @@ import { Text, TouchableWithoutFeedback, View, Dimensions,Image } from 'react-na
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Actions } from 'react-native-router-flux';
 import { Card, CardSection, IconButton } from '../common';
+import { setPin, galleryFetch } from '../../actions';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 
 class ListItem extends Component {
         constructor(props) {
@@ -10,20 +13,29 @@ class ListItem extends Component {
             this.state = { 
                     width: Dimensions.get('window').width,
                     height: Dimensions.get('window').height,
+                    joinPin: this.props.joinedEvents.joinPin,
+                    joinName: this.props.joinedEvents.joinName,
                 };
 
             this.onLayout = this.onLayout.bind(this);
+            this.onButtonPress = this.onButtonPress.bind(this)
 
           }
 
-onLayout(e) {
+          onLayout(e) {
               this.setState({
                 width: Dimensions.get('window').width,
                 height: Dimensions.get('window').height,
               });
             }
+onButtonPress() {
+        const {joinPin} = this.state
+         this.props.setPin({joinPin});
+         Actions.ShowCamera()
+}
 
   render() {
+const { joinPin, joinName } = this.state
 const styles = {
                   cardStyle:{
                           height:295,
@@ -57,17 +69,15 @@ const styles = {
                           backgroundColor:'#8c4799',
                   },
                 };
-    const { joinName, joinPin } = this.props.joinedEvents;
-
     return (
       
 
             <Card  onLayout={this.onLayout} style={styles.cardStyle} >
                 
-                  <Image source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}} style={styles.Image}/>
+                  <Image source={{uri: 'google.com' }} style={styles.Image}/>
 
                   <IconButton 
-                        onpress={ () => Actions.ShowCamera({joinPin})} 
+                        onpress={ this.onButtonPress } 
                         buttonStyle = { styles.floatingButtonStyle }
                         name="add-a-photo"
                         color='#c7c8ca' 
@@ -85,5 +95,11 @@ const styles = {
   }
 }
 
+const mapStateToProps = state => {
+          
+        const selectedPin = state.fetchedImages.selectedPin.joinPin
 
-export default ListItem
+          return{ selectedPin };
+        };
+
+export default connect(mapStateToProps, { setPin, galleryFetch })(ListItem)

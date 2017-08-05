@@ -6,6 +6,8 @@ import { Actions } from 'react-native-router-flux';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
 import firebase from 'firebase';
+import { connect } from 'react-redux';
+import { setPin } from '../actions';
 import { IconButton } from './common'
 
 class CameraRoute extends Component {
@@ -96,7 +98,7 @@ uploadImage = (uri = this.state.path, mime = 'image/pjpeg') => {
       const fs = RNFetchBlob.fs
       window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
       window.Blob = Blob
-      const joinPin = this.props.joinPin
+      const joinPin = this.props.selectedPin
 
   return new Promise((resolve, reject) => {
         const uploadUri = uri.replace('file://','') 
@@ -140,7 +142,7 @@ uploadImage = (uri = this.state.path, mime = 'image/pjpeg') => {
 
 
   render() {
-    const {joinPin}=this.props
+    
     const styles = {
                     container: {
                       flex: 1,
@@ -240,7 +242,7 @@ uploadImage = (uri = this.state.path, mime = 'image/pjpeg') => {
 
                                                       <IconButton  
                                                               buttonStyle={ styles.bottomLeft }
-                                                              onpress={ () => Actions.Gallery({joinPin}) }
+                                                              onpress={ () => Actions.Gallery() }
                                                               name= 'photo-library'
                                                               size={40}
                                                               color="#fff"
@@ -283,7 +285,6 @@ uploadImage = (uri = this.state.path, mime = 'image/pjpeg') => {
                       
 
 
-
     return (
       <View 
           style={styles.container}
@@ -294,5 +295,11 @@ uploadImage = (uri = this.state.path, mime = 'image/pjpeg') => {
     );
   }
 };
+const mapStateToProps = state => {
+          
+        const selectedPin = state.fetchedImages.selectedPin.joinPin
 
-export default CameraRoute; 
+          return{ selectedPin };
+        };
+
+export default connect(mapStateToProps, { setPin }) (CameraRoute)

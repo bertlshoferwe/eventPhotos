@@ -5,7 +5,7 @@ import { ListView, Image,Dimensions, BackHandler, ToastAndroid, View, Text, Touc
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
-import { eventsFetch } from '../actions';
+import { eventsFetch, galleryFetch } from '../actions';
 import { Card, CardSection, Button, Spinner, IconButton } from './common';
 import ListItem from './listItems/currentListItem';
 
@@ -28,6 +28,8 @@ class CurrentEvent extends Component {
 
 
         componentWillMount() {
+                          const joinPin = 1234
+                          this.props.galleryFetch({joinPin});
                           this.props.eventsFetch();
                           this.createDataSource(this.props);
                         }
@@ -57,18 +59,17 @@ class CurrentEvent extends Component {
 
 
 
-        createDataSource({ joinedEvent }) {
+        createDataSource({ joinedEvent}) {
                           const ds = new ListView.DataSource({
                             rowHasChanged: (r1, r2) => r1 !== r2
                           });
 
-                          this.dataSource = ds.cloneWithRows(joinedEvent);
+                          this.dataSource = ds.cloneWithRows( joinedEvent );
                         }
 
 
-        renderRow(joinedEvent) {
-                          return <ListItem joinedEvents={joinedEvent} 
-                                            />;
+        renderRow(joinedEvent, images) {
+                          return <ListItem joinedEvents={joinedEvent} image={images} />;
                         }
 
 
@@ -230,9 +231,12 @@ return (
           const joinedEvent = _.map(state.joinedEvent.listItems, (val, uid) => { 
             return { ...val, uid };
           });
+          const images = _.map( state.fetchedImages.listItems, (val, uid) => {
+            return{ ...val, uid };
+          })
           
 
-          return{ joinedEvent, loading, };
+          return{ joinedEvent, loading, images };
         };
 
-export default connect(mapStateToProps, { eventsFetch })(CurrentEvent);
+export default connect(mapStateToProps, { eventsFetch, galleryFetch })(CurrentEvent);

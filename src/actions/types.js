@@ -20,3 +20,4 @@ export const FETCHING_JOINED_EVENTS = 'fetcing_joined_events';
 
 export const FETCHING_IMAGES = 'fetching_images';
 export const FETCHING_IMAGES_SUCCESS = 'fetching-images_success';
+export const SELECTED_PIN = 'selected_pin'
