@@ -3,7 +3,7 @@ import { Text, TouchableWithoutFeedback, View, Dimensions,Image } from 'react-na
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Actions } from 'react-native-router-flux';
 import { Card, CardSection, IconButton } from '../common';
-import { setPin, galleryFetch } from '../../actions';
+import { setPin } from '../../actions';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -102,4 +102,4 @@ const mapStateToProps = state => {
           return{ selectedPin };
         };
 
-export default connect(mapStateToProps, { setPin, galleryFetch })(ListItem)
+export default connect(mapStateToProps, { setPin })(ListItem)

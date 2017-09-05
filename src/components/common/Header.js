@@ -1,13 +1,23 @@
 // Import libraries for making a component
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // Make a component
 const Header = (props) => {
-  const { textStyle, viewStyle } = styles;
+  const { textStyle, viewStyle, buttonStyle } = styles;
 
   return (
     <View style={viewStyle}>
+      <TouchableOpacity 
+                onPress={ props.onpress } 
+                style={[buttonStyle, props.buttonStyle] }>
+
+                  <Text>
+                      <Icon name={props.name} size={props.size} color={props.color} />
+                  </Text>
+
+        </TouchableOpacity>
       <Text style={textStyle}>{props.headerText}</Text>
     </View>
   );
@@ -16,6 +26,7 @@ const Header = (props) => {
 const styles = {
   viewStyle: {
     backgroundColor: '#F8F8F8',
+    flexDirection:'row',
     justifyContent: 'center',
     alignItems: 'center',
     height: 60,
@@ -28,6 +39,13 @@ const styles = {
   },
   textStyle: {
     fontSize: 20
+  },
+  buttonStyle: {
+    width: 50,
+    borderColor: '#fff',
+    position: 'absolute',
+    top:22,
+    left:10,
   }
 };
 

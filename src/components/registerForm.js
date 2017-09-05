@@ -17,6 +17,9 @@ class RegisterForm extends Component {
 
           this.handleBackButton = this.handleBackButton.bind(this);
           this.onLayout = this.onLayout.bind(this);
+          this.onEmailChange = this.onEmailChange.bind(this)
+          this.onPasswordChange =this.onPasswordChange.bind(this);
+          this.registerButtonPress = this.registerButtonPress.bind(this);
 
   }
 
@@ -53,7 +56,7 @@ onLayout(e) {
                 width: Dimensions.get('window').width,
                 height: Dimensions.get('window').height,
               });
-            }
+            }    
   
 
   render() {
@@ -117,7 +120,7 @@ const styles = {
       const renderButton = (this.props.loading) ? 
                                                     <Spinner size="large" />
                                               :
-                                                    <Button onPress={this.registerButtonPress.bind(this)} 
+                                                    <Button onPress={() => this.registerButtonPress} 
                                                             buttonStyle={ styles.registerButton} 
                                                             textStyle={styles.registerText}
                                                             >
@@ -158,20 +161,27 @@ const styles = {
 
             <CardSection style={ styles.inputMarginTop }>
               <Input
+                returnKeyTypes = 'next'
+                bluronsubmit={false}
+                onsubmitediting={() => {this.nextInput.focus()}}
+                autofocus={true}
                 label= {<Icon name="email" size={40} />}
                 placeholder="email@gmail.com"
-                onChangeText={this.onEmailChange.bind(this)}
-                value={this.props.email}
+                onChangeText={ this.onEmailChange }
+                value={ this.props.email }
               />
             </CardSection>
           
             <CardSection style={ styles.inputMargin }>
               <Input
+                Ref={nextInput => this.nextInput = nextInput}
+                returnKeyTypes = 'go'
+                onSubmitEditing={ this.registerButtonPress }
                 secureTextEntry
                 label= {<Icon name="lock" size={40} />}
                 placeholder="password"
-                onChangeText={this.onPasswordChange.bind(this)}
-                value={this.props.password}
+                onChangeText={ this.onPasswordChange }
+                value={ this.props.password} 
               />
             </CardSection>
           

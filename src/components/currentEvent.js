@@ -5,8 +5,8 @@ import { ListView, Image,Dimensions, BackHandler, ToastAndroid, View, Text, Touc
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
-import { eventsFetch, galleryFetch } from '../actions';
-import { Card, CardSection, Button, Spinner, IconButton } from './common';
+import { eventsFetch } from '../actions';
+import { Card, CardSection, Button, Spinner, IconButton, Header } from './common';
 import ListItem from './listItems/currentListItem';
 
 class CurrentEvent extends Component {
@@ -18,6 +18,8 @@ class CurrentEvent extends Component {
                             isOptionsVisible: false,
                             width: Dimensions.get('window').width,
                             height: Dimensions.get('window').height,
+                            floatingButtombottom: 40,
+                            floatingOptionbottom: 170
                           };
 
               this.setOptionsVisible = this.setOptionsVisible.bind(this);
@@ -28,10 +30,11 @@ class CurrentEvent extends Component {
 
 
         componentWillMount() {
-                          const joinPin = 1234
-                          this.props.galleryFetch({joinPin});
+                          const joinPin = this.props.joinedEvent
                           this.props.eventsFetch();
                           this.createDataSource(this.props);
+                          
+                          
                         }
 
 
@@ -59,23 +62,23 @@ class CurrentEvent extends Component {
 
 
 
-        createDataSource({ joinedEvent}) {
+        createDataSource({ joinedEvent }) {
                           const ds = new ListView.DataSource({
                             rowHasChanged: (r1, r2) => r1 !== r2
                           });
 
-                          this.dataSource = ds.cloneWithRows( joinedEvent );
+                          this.dataSource = ds.cloneWithRows(joinedEvent);
                         }
 
 
-        renderRow(joinedEvent, images) {
-                          return <ListItem joinedEvents={joinedEvent} image={images} />;
+        renderRow(joinedEvent) {
+                          return <ListItem joinedEvents={joinedEvent} />;
                         }
 
 
         setOptionsVisible( isOptionsVisible ){
                           this.setState({ isOptionsVisible: !this.state.isOptionsVisible });
-                      }
+                      }               
         onLayout(e) {
                     this.setState({
                       width: Dimensions.get('window').width,
@@ -105,7 +108,7 @@ render() {
                             backgroundColor:'#009389'
                           },
                           background: {
-                            paddingTop: 40,
+                            paddingTop: 0,
                             alignItems: 'center',
                           },
                           loadingCardStyle: {
@@ -116,13 +119,13 @@ render() {
                           },
                           floatingButtonStyle:{
                             right: 20,
-                            bottom: 40,
+                            bottom: this.state.floatingButtombottom,
                             position: 'absolute',
                           },
                           optionStyle:{
                             zIndex:1,
                             right: 20,
-                            bottom: 110,
+                            bottom: this.state.floatingOptionbottom,
                             width: 200,
                             height:150,
                             position: 'absolute',
@@ -148,7 +151,7 @@ render() {
                                                       dataSource={this.dataSource}
                                                       renderRow={this.renderRow}
                                                     /> 
-
+                                                  
                                              :    
                                                   
                                                   <Card  style={styles.cardStyle} >
@@ -168,22 +171,19 @@ render() {
                                             <View>
                                                 {renderListItems}
 
-                                                <IconButton  
-                                                        buttonStyle={styles.floatingButtonStyle}
-                                                        onpress={ this.setOptionsVisible }
-                                                        name="blur-on" 
-                                                        size={40}
-                                                        />
                                               </View>  
                                             ;   
-
           
-                               
+          const floatingIconButton   =  <IconButton  
+                                                buttonStyle={styles.floatingButtonStyle}
+                                                onpress={ this.setOptionsVisible }
+                                                name="blur-on" 
+                                                size={40}
+                                                />                 
 
           const floatingButtonOptions = (!this.state.isOptionsVisible) ? 
                                               <View/>
                                               :
-                                               
                                                   <Card style={styles.optionStyle}>
 
                                                         <Button onPress={ () => Actions.CreateEvent( this.setOptionsVisible() ) } 
@@ -203,7 +203,7 @@ render() {
 
                                                   </Card>
                                                       
-                                               ;                                
+                                                ;                                
                                                                                                                                
 return (
 
@@ -211,14 +211,15 @@ return (
               onLayout={this.onLayout}
               style={ styles.backgroundImage }
             >
+            <Header headerText='Your Events' />
+            
            <View style={ styles.background }> 
 
                       {floatingButtonOptions}
                 
                       {renderList}
-
-
           </View>            
+            {floatingIconButton}
         </View>    
           );
         }
@@ -230,13 +231,9 @@ return (
           const loading = state.joinedEvent.loading;
           const joinedEvent = _.map(state.joinedEvent.listItems, (val, uid) => { 
             return { ...val, uid };
-          });
-          const images = _.map( state.fetchedImages.listItems, (val, uid) => {
-            return{ ...val, uid };
-          })
-          
+          });          
 
-          return{ joinedEvent, loading, images };
+          return{ joinedEvent, loading };
         };
 
-export default connect(mapStateToProps, { eventsFetch, galleryFetch })(CurrentEvent);
+export default connect(mapStateToProps, { eventsFetch })(CurrentEvent);

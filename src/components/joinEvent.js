@@ -4,7 +4,7 @@ import { View, BackHandler, ToastAndroid, Dimensions, Image } from 'react-native
 import {Actions} from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { joinEvent, joinPinChange } from '../actions'
-import { Card, CardSection, Input, Button, IconButton } from './common';
+import { Card, CardSection, Input, Button, IconButton, Header } from './common';
 
 class JoinEvent extends Component {
     constructor(props) {
@@ -54,12 +54,15 @@ class JoinEvent extends Component {
     const styles = {
                     backgroundImage: {
                       flex:1,
-                      alignItems: 'center',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
+                      backgroundColor: '#c7c8ca',
                       width: this.state.width, 
                       height: this.state.height,
                       backgroundColor:'#009389'
+                    },
+                    background: {
+                      paddingTop: 30,
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     },
                     joinButton:{
                       backgroundColor:'#ccaed0',
@@ -95,16 +98,20 @@ class JoinEvent extends Component {
           style={ styles.backgroundImage }
           >
 
-          <IconButton  
-              buttonStyle={ styles.topLeft }
-              onpress={ () => Actions.pop() }
-              name="arrow-back" 
-              color='#fff'
-              size={40}
-              />  
-            
+            <Header headerText='Join an Event'
+                    onpress={ () => Actions.pop() }
+                    name="arrow-back" 
+                    size={35}/>
+
+
+              <View style={ styles.background }> 
+
+
                 <CardSection style={ styles.inputMarginTop }>
                     <Input
+                        returnKeyTypes = 'go'
+                        onSubmitEditing={ this.registerButtonPress }
+                        autofocus={true}
                         label=  {<Icon name="fiber-pin" size={40} />}
                         placeholder="EX. 1234"
                         onChangeText={this.onPinChange.bind(this)}
@@ -120,7 +127,7 @@ class JoinEvent extends Component {
                         Join Event
                     </Button>
                 </CardSection>
-           
+            </View>
           </View>  
     );
   }

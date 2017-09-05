@@ -13,6 +13,7 @@
 		"react": "16.0.0-alpha.6",
 		"react-native": "0.44.2",
 		"react-native-camera": "0.6",
+		"react-native-camera-roll-picker": "^1.1.9",
 		"react-native-fetch-blob": "^0.10.5",
 		"react-native-image-picker": "^0.26.3",
 		"react-native-router-flux": "^3.39.2",
@@ -30,6 +31,4 @@
 	"jest": {
 		"preset": "react-native"
 	}
-	
 }
-

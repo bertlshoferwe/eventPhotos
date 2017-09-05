@@ -3,8 +3,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Actions} from 'react-native-router-flux';
 import { Text, BackHandler, ToastAndroid, View, Dimensions, Image } from 'react-native';
 import { connect } from 'react-redux';
-import { eventCreate, eventChange, pinChange} from '../actions'
-import { Card, CardSection, Input, Button, Spinner, IconButton } from './common';
+import { eventCreate, eventChange, pinChange} from '../actions';
+import { Card, CardSection, Input, Button, Spinner, IconButton, Header } from './common';
+import ImagePicker from 'react-native-image-picker'
 
 class CreateEvent extends Component {
   constructor(props) {
@@ -13,10 +14,12 @@ class CreateEvent extends Component {
       backPress:false,
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height,
+      uploadUrl: '',
    };
 
     this.handleBackButton = this.handleBackButton.bind(this)
     this.onLayout = this.onLayout.bind(this);
+    this.pickImage + this.pickImage.bind(this);
 
   }
 
@@ -52,6 +55,30 @@ class CreateEvent extends Component {
                       height: Dimensions.get('window').height,
                     });
                   }
+_focusNextField(nextField) {
+        this.refs[nextField].focus()
+    }
+
+pickImage() {
+    ImagePicker.showImagePicker((response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled photo picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else {
+
+        this.setState({
+          uploadUrl: source
+        });
+      }
+    });
+  
+  }
+
 
   render() {
         
@@ -59,12 +86,15 @@ class CreateEvent extends Component {
         const styles = {
                         backgroundImage: {
                           flex:1,
-                          alignItems: 'center',
-                          flexDirection: 'column',
-                          justifyContent: 'center',
+                          backgroundColor: '#c7c8ca',
                           width: this.state.width, 
                           height: this.state.height,
                           backgroundColor:'#009389'
+                        },
+                        background: {
+                          paddingTop: 30,
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         },
                         createButton:{
                           backgroundColor:'#ccaed0',
@@ -99,64 +129,83 @@ class CreateEvent extends Component {
                       };
 
           const renderButton = (this.props.loading) ? 
-                                                    <Spinner size="large" />
+                                                  <Button buttonStyle={ styles.createButton } 
+                                                          textStyle={ styles.createButtonText }>
+
+                                                      <Spinner size="large" />
+
+                                                  </Button>
                                               :
                                                      <Button onPress={this.eventButtonPress.bind(this)} 
                                                               buttonStyle={ styles.createButton } 
                                                               textStyle={ styles.createButtonText }>
                                                         Create Event
-                                                    </Button>
+                                                    </Button>;
+
+
+
+          const Content =            <View>
+                                       <Header headerText='Create Your Event'
+                                              onpress={ () => Actions.pop() }
+                                              name="arrow-back" 
+                                              size={35}/>
+
+
+                                        <View style={ styles.background }> 
+                                        
+                                            <CardSection style={ styles.inputMarginTop } >
+                                              <Input
+                                                returnKeyTypes = 'next'
+                                                autofocus = {true}
+                                                bluronsubmit={false}
+                                                onsubmitediting={() => {this.nextInput.focus()}}
+                                                label= {<Icon name="create" size={40} />}
+                                                placeholder="My Event Name"
+                                                onChangeText={this.onEventNameChange.bind(this)}
+                                                value={this.props.eventName}
+                                              />
+                                            </CardSection>
+                                            
+                                            <CardSection style={ styles.inputMargin } >
+                                                <Input
+                                                Ref={nextInput => this.nextInput = nextInput}
+                                                returnKeyTypes = 'go'
+                                                onSubmitEditing={ this.eventButtonPress.bind(this) }
+                                                label= {<Icon name="fiber-pin" size={40} />}
+                                                placeholder="EX. 1234"
+                                                onChangeText={this.onPinChange.bind(this)}
+                                                value={this.props.eventPin}
+                                              />
+                                            </CardSection>
+
+                                            <CardSection>
+                                                <Button onPress={this.pickImage} 
+                                                          buttonStyle={ styles.createButton } 
+                                                          textStyle={ styles.createButtonText }>
+                                                        Select Image
+                                                </Button>
+                                            </CardSection>  
+                                            
+                                            <CardSection style={styles.createCardSectionStyle}>
+                                                { renderButton }
+                                            </CardSection>
+                                      </View> 
+                                     </View> 
+                                                                          
 
 
     return (
-   <View
-        onLayout={this.onLayout}
-        style={ styles.backgroundImage }
-      >       
+      <View 
+          onLayout={this.onLayout}
+          style={ styles.backgroundImage }
+          >
 
-      <IconButton  
-              buttonStyle={ styles.topLeft }
-              onpress={ () => Actions.pop() }
-              name="arrow-back" 
-              color='#fff'
-              size={40}
-              />  
-        
-            <CardSection style={ styles.inputMarginTop } >
-              <Input
-                label= {<Icon name="create" size={40} />}
-                placeholder="My Event Name"
-                onChangeText={this.onEventNameChange.bind(this)}
-                value={this.props.eventName}
-              />
-            </CardSection>
-            
-            <CardSection style={ styles.inputMargin } >
-                <Input
-                label= {<Icon name="fiber-pin" size={40} />}
-                placeholder="EX. 1234"
-                onChangeText={this.onPinChange.bind(this)}
-                value={this.props.eventPin}
-              />
-            </CardSection>
-            
-            <CardSection style={styles.createCardSectionStyle}>
-                { renderButton }
-            </CardSection>
+      { Content }
 
- </View>    
+      </View>
     );
   }
 }
-
-const styles = {
-  backgroundImage: {
-    flex:1,
-    flexDirection: 'column',
-    width: Dimensions.get('window').width, 
-    height: Dimensions.get('window').height
-  },
-};
 
 const mapStateToProps = ({ event }) => {
   const { eventName, eventPin, error, loading } = event;
@@ -164,6 +213,5 @@ const mapStateToProps = ({ event }) => {
   return { eventName, eventPin, error, loading };
 };
 
-export default connect(mapStateToProps, {
-  eventCreate, eventChange, pinChange
-})(CreateEvent);
+export default connect(mapStateToProps, { eventCreate, eventChange, pinChange})
+(CreateEvent);

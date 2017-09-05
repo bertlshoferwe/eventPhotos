@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { View, BackHandler, ToastAndroid, Dimensions, Image, ListView } from 'react-native';
+import { View, BackHandler, ToastAndroid, Dimensions, Image, ListView, Text } from 'react-native';
 import {Actions} from 'react-native-router-flux';
-import { IconButton } from './common';
-import { setPin, galleryFetch } from '../actions';
+import { setPin, galleryFetch, SelectedURL, clearImage } from '../actions';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import ListItem from './listItems/galleryListItem';
-import { Card, Spinner } from './common'
+import { Card, Spinner, Header, IconButton } from './common'
 
 class Gallery extends Component {
     constructor(props) {
     super(props);
     this.state = { 
-      backPress:false,
-      width: Dimensions.get('window').width,
-      height: Dimensions.get('window').height,
+          backPress:false,
+          width: Dimensions.get('window').width,
+          height: Dimensions.get('window').height,
                         };
     this.handleBackButton = this.handleBackButton.bind(this)
     this.onLayout = this.onLayout.bind(this);
+    this.clearImage =  this.clearImage.bind(this)
 
   }
 
@@ -58,6 +58,11 @@ renderRow(fetchedImages) {
               } 
   }
 
+clearImage(){
+  this.props.clearImage()
+
+}
+
   onLayout(e) {
                     this.setState({
                       width: Dimensions.get('window').width,
@@ -70,14 +75,22 @@ renderRow(fetchedImages) {
     const styles = {
                     backgroundImage: {
                       flex:1,
-                      flexDirection: 'row',
-                      justifyContent: 'center',
+                      backgroundColor: '#c7c8ca',
                       width: this.state.width, 
                       height: this.state.height,
                       backgroundColor:'#009389'
                     },
+                    background: {
+                      paddingTop: 0,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    },
+                    imageSize: {
+                      width: this.state.width,
+                      height: this.state.height - 60
+                    },
                     listPosition: {
-                      marginTop: 100,
+                      marginTop: 0,
                     },
                     list: {
                         flexWrap: 'wrap',
@@ -92,28 +105,45 @@ renderRow(fetchedImages) {
                         backgroundColor: '#fff'
                     },
                     topLeft: {
+                      zIndex:1,
                       position: 'absolute',
                       top: 40,
                       left: 20,
                       backgroundColor: 'transparent'
                     }
                   };
-console.log(this.props.loading)
-     const renderList = (this.props.loading) ? 
-                                          <Card style={ styles.loadingCardStyle }>
-                                              <Spinner size="large" />
-                                          </Card>
-                                          :
-                                          <View style={styles.listPosition}>
-                                            <ListView
-                                                enableEmptySections
-                                                contentContainerStyle={styles.list}
-                                                dataSource={this.dataSource}
-                                                renderRow={this.renderRow}
-                                            /> 
-                                           </View> 
-                                            ; 
 
+      const renderView = ( this.props.length ) ?
+                                                        <View style={ styles.background }>
+                                                            
+                                                            <IconButton  
+                                                                buttonStyle={ styles.topLeft }
+                                                                onpress={ this.clearImage }
+                                                                name="close" 
+                                                                color='#fff'
+                                                                size={40}
+                                                                />
+
+                                                            <Image style={styles.imageSize} source={{uri: this.props.imageSelected.selectedImage }}  />
+
+                                                        </View>
+                                                        :
+                                                          ( this.props.loading ) ? 
+                                                                                <Card style={ styles.loadingCardStyle }>
+                                                                                    <Spinner size="large" />
+                                                                                </Card>
+                                                                                :
+                                                                                <View style={styles.listPosition}>
+                                                                                  <ListView
+                                                                                      enableEmptySections
+                                                                                      contentContainerStyle={styles.list}
+                                                                                      dataSource={this.dataSource}
+                                                                                      renderRow={this.renderRow}
+                                                                                  /> 
+                                                                                </View> 
+                                                                                  ;  
+                                                      ;
+                                          
     return (
 
       <View 
@@ -121,18 +151,14 @@ console.log(this.props.loading)
           style={ styles.backgroundImage }
           >
 
-          <IconButton  
-              buttonStyle={ styles.topLeft }
-              onpress={ () => Actions.pop() }
-              name="arrow-back" 
-              color='#fff'
-              size={40}
-              /> 
+        <Header headerText='Gallery'
+                onpress={ () => Actions.pop() }
+                name="arrow-back" 
+                size={35}/>
 
-              {renderList} 
-            
-                
-          </View>  
+            { renderView }
+              
+      </View>  
     );
   }
 }
@@ -143,8 +169,10 @@ const mapStateToProps = state => {
           const fetchedImages =  _.map(state.fetchedImages.listItems, (val, uid) => { 
             return { ...val, uid };
           });
+          const imageSelected = state.fetchedImages.imageSelected;
+          const length = state.fetchedImages.length;
 
-          return{ fetchedImages, loading, selectedPin };
+          return{ fetchedImages, loading, selectedPin, imageSelected, length };
         };
 
-export default connect(mapStateToProps, { setPin, galleryFetch })(Gallery);
+export default connect(mapStateToProps, { setPin, galleryFetch, SelectedURL, clearImage })(Gallery);

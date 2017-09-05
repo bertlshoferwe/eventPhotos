@@ -3,7 +3,6 @@ import {View, StyleSheet, Dimensions, TouchableHighlight, Image, Text, BackHandl
 import Camera from 'react-native-camera';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Actions } from 'react-native-router-flux';
-import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
@@ -119,7 +118,7 @@ uploadImage = (uri = this.state.path, mime = 'image/pjpeg') => {
           })
           .then((url) => {
             resolve(url)
-            firebase.database().ref(`Created_Events/${joinPin}/images/`)
+            firebase.database().ref(`Images/${joinPin}`)
             .push({url})
             console.log(url)
           })

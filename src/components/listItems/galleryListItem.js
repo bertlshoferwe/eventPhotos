@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Text, View, Dimensions, Image } from 'react-native';
+import { Text, View, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import { SelectedURL } from '../../actions';
 
 class ListItem extends Component {
         constructor(props) {
@@ -7,9 +9,12 @@ class ListItem extends Component {
             this.state = { 
                     width: Dimensions.get('window').width,
                     height: Dimensions.get('window').height,
+                    selectedImage: this.props.fetchedImage.url
                 };
 
             this.onLayout = this.onLayout.bind(this);
+            this.onButtonPress = this.onButtonPress.bind(this)
+
 
           }
 
@@ -19,6 +24,11 @@ onLayout(e) {
                 height: Dimensions.get('window').height,
               });
             }
+onButtonPress() {
+        const { selectedImage } = this.state
+         this.props.SelectedURL({selectedImage})
+         
+}
 
   render() {
 const styles = {
@@ -36,14 +46,17 @@ const styles = {
                 };
     
 const { url } = this.props.fetchedImage;
-console.log({url})
+
     return (
       
 
             <View  onLayout={this.onLayout} style={styles.galleryLayout} >
                 
-                  <Image source={{uri: url }} style={styles.Image}/>
-
+                <TouchableOpacity onPress={ this.onButtonPress }>
+                  <Image source={{uri: url }} 
+                          style={styles.Image}
+                          />
+                </TouchableOpacity>
               </View>
          
 
@@ -51,5 +64,11 @@ console.log({url})
   }
 }
 
+const mapStateToProps = state => {
+          
+        const imageSelected = state.fetchedImages.imageSelected.url
 
-export default ListItem
+          return{ imageSelected };
+        };
+
+export default connect(mapStateToProps, { SelectedURL }) (ListItem)

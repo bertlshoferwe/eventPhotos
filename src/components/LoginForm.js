@@ -191,6 +191,9 @@ class LoginForm extends Component {
       
         <CardSection style={styles.inputMarginTop }>
           <Input
+            returnKeyTypes = 'next'
+            bluronsubmit={false}
+            onsubmitediting={() => {this.nextInput.focus()}}
             label= {<Icon name="email" size={40} />}
             placeholder="email@gmail.com"
             onChangeText={this.onEmailChange.bind(this)}
@@ -202,6 +205,9 @@ class LoginForm extends Component {
        
         <CardSection style={styles.inputMargin}>
           <Input
+            Ref={nextInput => this.nextInput = nextInput}
+            returnKeyTypes = 'go'
+            onSubmitEditing={ this.loginButtonPress.bind(this) }
             secureTextEntry
             label= {<Icon name="lock" size={40} />}
             placeholder="password"
